@@ -126,6 +126,17 @@ def main():
 
 
 def main_worker(gpu, ngpus_per_node, args):
+    ## My additions
+    print('Is Pytorch built with MPS: ', torch.backends.mps.is_built()) # for debug
+
+    device_str = ("cuda" if torch.cuda.is_available()
+    else "mps" if torch.backends.mps.is_available()
+    else "cpu")
+
+    print(f"Using {device_str} device\n")
+    gpu_device = torch.device(device_str)
+    ## My additions
+
     args.gpu = gpu
 
     # suppress printing if not master
@@ -159,36 +170,44 @@ def main_worker(gpu, ngpus_per_node, args):
     if args.distributed:
         # Apply SyncBN
         model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model)
-        # For multiprocessing distributed, DistributedDataParallel constructor
-        # should always set the single device scope, otherwise,
-        # DistributedDataParallel will use all available devices.
-        if args.gpu is not None:
-            torch.cuda.set_device(args.gpu)
-            model.cuda(args.gpu)
-            # When using a single GPU per process and per
-            # DistributedDataParallel, we need to divide the batch size
-            # ourselves based on the total number of GPUs we have
-            args.batch_size = int(args.batch_size / ngpus_per_node)
-            args.workers = int((args.workers + ngpus_per_node - 1) / ngpus_per_node)
-            model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[args.gpu])
-        else:
-            model.cuda()
-            # DistributedDataParallel will divide and allocate batch_size to all
-            # available GPUs if device_ids are not set
-            model = torch.nn.parallel.DistributedDataParallel(model)
-    elif args.gpu is not None:
-        torch.cuda.set_device(args.gpu)
-        model = model.cuda(args.gpu)
-        # comment out the following line for debugging
-        raise NotImplementedError("Only DistributedDataParallel is supported.")
-    else:
-        # AllGather implementation (batch shuffle, queue update, etc.) in
-        # this code only supports DistributedDataParallel.
-        raise NotImplementedError("Only DistributedDataParallel is supported.")
+
+    # if args.distributed:
+    #     # Apply SyncBN
+    #     model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model)
+    #     # For multiprocessing distributed, DistributedDataParallel constructor
+    #     # should always set the single device scope, otherwise,
+    #     # DistributedDataParallel will use all available devices.
+    #     if args.gpu is not None:
+    #         torch.cuda.set_device(args.gpu)
+    #         model.cuda(args.gpu)
+    #         # When using a single GPU per process and per
+    #         # DistributedDataParallel, we need to divide the batch size
+    #         # ourselves based on the total number of GPUs we have
+    #         args.batch_size = int(args.batch_size / ngpus_per_node)
+    #         args.workers = int((args.workers + ngpus_per_node - 1) / ngpus_per_node)
+    #         model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[args.gpu])
+    #     else:
+    #         #model.cuda()
+    #         # DistributedDataParallel will divide and allocate batch_size to all
+    #         # available GPUs if device_ids are not set
+    #         model = torch.nn.parallel.DistributedDataParallel(model)
+    # elif args.gpu is not None:
+    #     torch.cuda.set_device(args.gpu)
+    #     model = model.cuda(args.gpu)
+    #     # comment out the following line for debugging
+    #     raise NotImplementedError("Only DistributedDataParallel is supported. (1)")
+    # else:
+    #     # AllGather implementation (batch shuffle, queue update, etc.) in
+    #     # this code only supports DistributedDataParallel.
+    #     raise NotImplementedError("Only DistributedDataParallel is supported. (2)")
+
+    # Convert device from CUDA to MPS: ## My addition
+    model.to(gpu_device)
     print(model) # print model after SyncBatchNorm
 
     # define loss function (criterion) and optimizer
-    criterion = nn.CosineSimilarity(dim=1).cuda(args.gpu)
+    criterion = nn.CosineSimilarity(dim=1) ## My addition
+    #criterion = nn.CosineSimilarity(dim=1).cuda(args.gpu)
 
     if args.fix_pred_lr:
         optim_params = [{'params': model.module.encoder.parameters(), 'fix_lr': False},
@@ -221,7 +240,7 @@ def main_worker(gpu, ngpus_per_node, args):
     cudnn.benchmark = True
 
     # Data loading code
-    traindir = os.path.join(args.data, 'train')
+    traindir = os.path.join(args.data, 'Train') ## My addition
     normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                      std=[0.229, 0.224, 0.225])
 
@@ -287,6 +306,7 @@ def train(train_loader, model, criterion, optimizer, epoch, args):
         data_time.update(time.time() - end)
 
         if args.gpu is not None:
+            print("Converting training images into CUDA format.")
             images[0] = images[0].cuda(args.gpu, non_blocking=True)
             images[1] = images[1].cuda(args.gpu, non_blocking=True)
 
