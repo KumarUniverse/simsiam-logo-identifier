@@ -22,11 +22,8 @@ import torch
 import torch.nn as nn
 import torch.nn.parallel
 import torch.backends.cudnn as cudnn
-#import torch.distributed as dist
 import torch.optim
-#import torch.multiprocessing as mp
 import torch.utils.data
-#import torch.utils.data.distributed
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 import torchvision.models as models
@@ -58,7 +55,7 @@ parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
 parser.add_argument('--set-cp-epoch', action='store_true',
                     help=('Set the starting epoch the same as the ' +
                         'checkpoint epoch (True if included; default: False)'))
-parser.add_argument('-b', '--batch-size', default=64, type=int,
+parser.add_argument('-b', '--batch-size', default=32, type=int,
                     metavar='N',
                     help='mini-batch size (default: 64)')
 parser.add_argument('--lr', '--learning-rate', default=0.05, type=float,
@@ -90,28 +87,40 @@ def main():
     if args.seed is not None:
         random.seed(args.seed)
         torch.manual_seed(args.seed)
-        # if torch.cuda.is_available():  # for Nvidia GPU
-        #     cudnn.deterministic = True
-        #     warnings.warn('You have chosen to seed training. '
-        #                 'If using an Nvidia GPU, this will turn on the CUDNN deterministic setting, '
-        #                 'which can slow down your training considerably! '
-        #                 'You may see unexpected behavior when restarting from checkpoints.')
+        if torch.cuda.is_available():  # for Nvidia GPU
+            cudnn.deterministic = True
+            warnings.warn('You have chosen to seed training. '
+                        'If using an Nvidia GPU, this will turn on the CUDNN deterministic setting, '
+                        'which can slow down your training considerably! '
+                        'You may see unexpected behavior when restarting from checkpoints.')
 
     # Call the worker fn and pass in the command-line arguments.
-    main_worker(args);
+    program_start_time = time.time()
+    main_worker(args)
+    program_end_time = time.time()
+    total_elapsed_time = int(program_end_time - program_start_time)
+    total_elapsed_mins = total_elapsed_time // 60
+    total_elapsed_secs = total_elapsed_time % 60
 
-    print("Unsupervised training of SimSiam network complete.")
+    print("\nUnsupervised training of SimSiam network complete.")
+    print(f"Total elapsed time: {total_elapsed_mins} mins and {total_elapsed_secs} secs.")
 
 def main_worker(args):
     """Helper function for the main function."""
     # Set the GPU device to use.
-    #print('Is Pytorch built with MPS: ', torch.backends.mps.is_built()) # for debug
+    print('Is CUDA available: ', torch.cuda.is_available())
+    print('Is MPS available: ', torch.backends.mps.is_available())
+    print('Is Pytorch built with MPS: ', torch.backends.mps.is_built())
     device_str = ("cuda" if torch.cuda.is_available()
                 else "mps" if torch.backends.mps.is_available()
                 else "cpu")
-    #print(f"Using {device_str.upper()} device...\n")
-    #gpu_device = torch.device(device_str)
-    gpu_device = torch.device("cpu") # for debugging.
+    gpu_device = torch.device(device_str)
+
+    # Uncomment to force device to be CPU:
+    # device_str = "cpu"
+    # gpu_device = torch.device("cpu")
+
+    print(f"Using {device_str.upper()} device...\n")
 
     # Dataset
     data_path = "./datasets/Car_Brand_Logos/"
@@ -120,33 +129,11 @@ def main_worker(args):
     if not os.path.isdir(train_path):
         raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), train_path)
 
-    # REMOVE:
-    # Load the parameters of the pre-trained model in the saved checkpoint.
-    # m_path = "./models/"
-    # pretrained_model_filename = "checkpoint_0099.pth.tar"
-    # checkpoint_path = os.path.join(m_path, pretrained_model_filename)
-    # if not os.path.isfile(checkpoint_path):
-    #     raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), pretrained_model_filename)
-    # checkpoint = torch.load(checkpoint_path, map_location=gpu_device)
-
     # Load the parameters of the pre-trained model in the saved checkpoint.
     if args.resume is not None:
         if not os.path.isfile(args.resume): # args.resume is the path to the checkpoint
             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), args.resume)
         checkpoint = torch.load(args.resume, map_location=gpu_device)
-
-    # MIGHT NOT NEED:
-    # Store the hyperparameters into variables
-    # num_workers = 8 # number of data loading workers (default: 32)
-    # epochs = 100 # total number of epochs to run (default: 100)
-    # num_pretrained_epochs = checkpoint['epoch'] # number of epochs pretrained model trained for
-    # batch_size = 64 # mini-batch size (default: 512)
-    # lr = 0.05 # initial (base) learning rate (default: 0.05)
-    # momentum = 0.9 # momentum of SGD solver
-    # weight_decay = 1e-4 # weight decay (default: 1e-4)
-    # dim = 2048 # feature dimension (default: 2048)
-    # pred_dim = 512 # hidden dimension of the predictor (default: 512)
-    # fix_pred_lr = True # fix learning rate for the predictor
 
     if args.resume: # if resuming from checkpoint, use same architecture as before.
         args.arch = checkpoint['arch'] # architecture of the pretrained model (default: 'resnet50')
@@ -160,6 +147,8 @@ def main_worker(args):
             models.__dict__[args.arch],
             args.dim, args.pred_dim)
     model = torch.nn.DataParallel(model) # Implement data parallelism at the module level.
+    model.to(gpu_device) # Convert model format to make it suitable for current GPU device.
+    #print(model) # print model for debugging
 
     if args.fix_pred_lr:
         optim_params = [{'params': model.module.encoder.parameters(), 'fix_lr': False},
@@ -168,12 +157,12 @@ def main_worker(args):
         optim_params = model.parameters()
 
     # define loss function (criterion) and optimizer
-    # if torch.cuda.is_available():
-    #     criterion = nn.CosineSimilarity(dim=1).to(gpu_device) # use if using single Nvidia GPU
-    #     cudnn.benchmark = True
-    # else:
-    #     criterion = nn.CosineSimilarity(dim=1).to(gpu_device)
-    criterion = nn.CosineSimilarity(dim=1).to(gpu_device)  # for debugging.
+    if torch.cuda.is_available():
+        criterion = nn.CosineSimilarity(dim=1).to(gpu_device) # use if using single Nvidia GPU
+        cudnn.benchmark = True
+    else:
+        criterion = nn.CosineSimilarity(dim=1).to(gpu_device)
+    #criterion = nn.CosineSimilarity(dim=1).to(gpu_device)  # for debugging.
 
     #init_lr = lr * batch_size / 256 # infer learning rate before changing batch size
     init_lr =  args.lr * 2 # args.lr * 512 / 256 # original batch size was 512
@@ -185,8 +174,6 @@ def main_worker(args):
         optimizer.load_state_dict(checkpoint['optimizer'])
         if args.set_cp_epoch: # to resume training from the last saved epoch.
             args.start_epoch = checkpoint['epoch']
-
-    # Freeze all the layers of the model except the first and last 3 layers.
 
     # There are 2 main network sections: the encoder and the predictor.
     # By default, all the layers require gradients (requires_grad_=True).
@@ -225,28 +212,7 @@ def main_worker(args):
         num_predictor_layers += 1
     # print(f"Number of layers in predictor: {num_predictor_layers}") # 4 layers
 
-    model.to(gpu_device) # Convert model format to make it suitable for current GPU device.
-    #print(model) # print model for debugging
-
     #num_layers = num_encoder_layers + num_predictor_layers  # 14 (NOTE)
-
-    # MIGHT NOT NEED:
-    # num_top_unnfreeze_layers = 3
-    # num_bottom_unfreeze_layers = 3
-    # freeze_lower_bound = num_top_unfreeze_layers
-    # freeze_upper_bound = num_layers - num_bottom_unfreeze_layers - 1
-    #
-    # for name, layer in model.named_parameters():
-    #     print(f"In layer for loop {name}, {layer}")
-    # for layer_idx, layer in enumerate(model.module):
-    #     if layer_idx < freeze_lower_bound or layer_idx > freeze_upper_bound:
-    #         print("unfreeze layer")
-    #         for param in layer.parameters():
-    #             param.requires_grad = True
-    #     else:
-    #         print("freeze layer")
-    #         for param in layer.parameters():
-    #             param.requires_grad = False
 
     # Data loading code
     traindir = os.path.join(args.data, 'Train')  # args.data = ./datasets/Car_Brand_Logos/
@@ -312,13 +278,13 @@ def train(train_loader, model, criterion, optimizer, epoch, args, device_str):
         data_time.update(time.time() - end)
 
         # This should work for a single Nvidia or Apple GPU.
-        # print("Converting training images to the correct GPU format.")
-        # if device_str == "cuda":
-        #     images[0] = images[0].cuda(non_blocking=True) # need non-blocking if using pin memory for CUDA
-        #     images[1] = images[1].cuda(non_blocking=True)
-        # elif device_str == "mps" or device_str == "cpu":
-        #     images[0] = images[0].to(device_str)
-        #     images[1] = images[1].to(device_str)
+        # print("Converting training images to the correct GPU format.") # for debugging
+        if device_str == "cuda":
+            images[0] = images[0].cuda(non_blocking=True) # need non-blocking if using pin memory for CUDA
+            images[1] = images[1].cuda(non_blocking=True)
+        elif device_str == "mps" or device_str == "cpu":
+            images[0] = images[0].to(device_str)
+            images[1] = images[1].to(device_str)
 
 
         # compute output and loss
