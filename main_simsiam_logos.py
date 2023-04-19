@@ -43,9 +43,7 @@ parser.add_argument('data', metavar='DIR',
                     help='path to dataset (no default; must be specified)')
 parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet50',
                     choices=model_names,
-                    help='model architecture: ' +
-                        ' | '.join(model_names) +
-                        ' (default: resnet50)')
+                    help='model architecture: ' + ' | '.join(model_names) + ' (default: resnet50)')
 parser.add_argument('-j', '--workers', default=8, type=int, metavar='N',
                     help='number of data loading workers (default: 8)')
 parser.add_argument('--epochs', default=10, type=int, metavar='N',
@@ -99,11 +97,13 @@ def main():
     main_worker(args)
     program_end_time = time.time()
     total_elapsed_time = int(program_end_time - program_start_time)
-    total_elapsed_mins = total_elapsed_time // 60
+    total_elapsed_hrs = total_elapsed_time // 60 // 60
+    total_elapsed_mins = (total_elapsed_time // 60) % 60
     total_elapsed_secs = total_elapsed_time % 60
 
     print("\nUnsupervised training of SimSiam network complete.")
-    print(f"Total elapsed time: {total_elapsed_mins} mins and {total_elapsed_secs} secs.")
+    print(f"Total elapsed time: {total_elapsed_hrs} hrs, " +
+            f"{total_elapsed_mins} mins and {total_elapsed_secs} secs.\n")
 
 def main_worker(args):
     """Helper function for the main function."""
@@ -162,7 +162,6 @@ def main_worker(args):
         cudnn.benchmark = True
     else:
         criterion = nn.CosineSimilarity(dim=1).to(gpu_device)
-    #criterion = nn.CosineSimilarity(dim=1).to(gpu_device)  # for debugging.
 
     #init_lr = lr * batch_size / 256 # infer learning rate before changing batch size
     init_lr =  args.lr * 2 # args.lr * 512 / 256 # original batch size was 512
@@ -249,14 +248,14 @@ def main_worker(args):
         # train for one epoch
         train(train_loader, model, criterion, optimizer, epoch, args, device_str)
 
-        if is_checkpoint_saved:
+        if is_checkpoint_saved and ((epoch+1) % 5 == 0):
             save_checkpoint({
                 'epoch': epoch + 1,
                 'arch': args.arch,
                 'state_dict': model.state_dict(),
                 'optimizer' : optimizer.state_dict(),
             }, is_best=False, filename='checkpoint_{:04d}.pth.tar'.format(epoch))
-            print("Checkpoint saved.")  # for debugging
+            print(f"Checkpoint {epoch} saved.")  # for debugging
 
 
 def train(train_loader, model, criterion, optimizer, epoch, args, device_str):
@@ -289,21 +288,14 @@ def train(train_loader, model, criterion, optimizer, epoch, args, device_str):
 
         # compute output and loss
         p1, p2, z1, z2 = model(x1=images[0], x2=images[1])
-        # p1.to(device_str)  # did not fix gpu device error.
-        # p2.to(device_str)
-        # z1.to(device_str)
-        # z2.to(device_str)
         loss = -(criterion(p1, z2).mean() + criterion(p2, z1).mean()) * 0.5 # apply stop gradient
-        # loss.to(device_str)  # did not fix gpu device error.
 
         losses.update(loss.item(), images[0].size(0))
 
         # compute gradient and do SGD step
         optimizer.zero_grad()
         loss.backward()        # perform backprop; compute the gradients of the loss
-        # loss.to(device_str)  # did not fix gpu device error.
         optimizer.step()       # update the values of the parameters using the gradients
-        # RuntimeError: Expected all tensors to be on the same device, but found at least two devices, mps:0 and cpu!
 
         # measure elapsed time
         batch_time.update(time.time() - end)
