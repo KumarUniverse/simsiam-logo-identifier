@@ -30,6 +30,8 @@ import torchvision.models as models
 import simsiam.loader
 import simsiam.builder
 
+
+
 model_names = sorted(name for name in models.__dict__
     if name.islower() and not name.startswith("__")
     and callable(models.__dict__[name]))
@@ -94,7 +96,7 @@ def main():
     main_worker(args)
     program_end_time = time.time()
     total_elapsed_time = int(program_end_time - program_start_time)
-    total_elapsed_hrs = total_elapsed_time // 60 // 60
+    total_elapsed_hrs = total_elapsed_time / 60 // 60
     total_elapsed_mins = (total_elapsed_time // 60) % 60
     total_elapsed_secs = total_elapsed_time % 60
 
@@ -118,20 +120,12 @@ def main_worker(args):
 
     print(f"Using {device_str.upper()} device...\n")
 
-    # Dataset
-    data_path = "./datasets/Car_Brand_Logos/"
-    train_folder_name = "Train/"
-    train_path = os.path.join(data_path, train_folder_name)
-    if not os.path.isdir(train_path):
-        raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), train_path)
-
     # Load the parameters of the pre-trained model in the saved checkpoint.
-    if args.resume is not None:
+    if args.resume:
         if not os.path.isfile(args.resume): # args.resume is the path to the checkpoint
             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), args.resume)
         checkpoint = torch.load(args.resume, map_location=gpu_device)
-
-    if args.resume: # if resuming from checkpoint, use same architecture as before.
+        # If resuming from checkpoint, use same architecture as before.
         args.arch = checkpoint['arch'] # architecture of the pretrained model (default: 'resnet50')
         # Checkpoints are saved with fix_pred_lr set to True.
         # So when loading checkpoints, fix_pred_lr must be set to True.
@@ -244,7 +238,7 @@ def main_worker(args):
         # train for one epoch
         train(train_loader, model, criterion, optimizer, epoch, args, device_str)
 
-        if is_checkpoint_saved and ((epoch) % 5 == 0):
+        if is_checkpoint_saved and ((epoch+1) % 5 == 0):
             save_checkpoint({
                 'epoch': epoch + 1,
                 'arch': args.arch,
@@ -256,22 +250,15 @@ def main_worker(args):
 
 def train(train_loader, model, criterion, optimizer, epoch, args, device_str):
     """Train the SimSiam model."""
-    batch_time = AverageMeter('Time', ':6.3f')
-    data_time = AverageMeter('Data', ':6.3f')
-    losses = AverageMeter('Loss', ':.4f')
-    progress = ProgressMeter(
-        len(train_loader),
-        [batch_time, data_time, losses],
-        prefix="Epoch: [{}]".format(epoch))
+    batch_time = AverageMeter('Time (s):', ':6.3f')
+    losses = AverageMeter('Loss:', ':.4f')
+    progress = ProgressMeter(len(train_loader), [batch_time, losses], prefix="Epoch: [{}]".format(epoch))
 
     # switch to train mode
     model.train()
 
     end = time.time()
     for i, (images, _) in enumerate(train_loader):
-        # measure data loading time
-        data_time.update(time.time() - end)
-
         # This should work for a single Nvidia or Apple GPU.
         # print("Converting training images to the correct GPU format.") # for debugging
         if device_str == "cuda":
@@ -331,18 +318,12 @@ class AverageMeter(object):
 
     def reset(self):
         self.val = 0
-        self.avg = 0
-        self.sum = 0
-        self.count = 0
 
     def update(self, val, n=1):
         self.val = val
-        self.sum += val * n
-        self.count += n
-        self.avg = self.sum / self.count
 
     def __str__(self):
-        fmtstr = '{name} {val' + self.fmt + '} ({avg' + self.fmt + '})'
+        fmtstr = '{name} {val' + self.fmt + '}'
         return fmtstr.format(**self.__dict__)
 
 

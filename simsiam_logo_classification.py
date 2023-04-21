@@ -30,6 +30,8 @@ import torchvision.models as models
 import simsiam.loader
 import simsiam.builder
 
+
+
 model_names = sorted(name for name in models.__dict__
     if name.islower() and not name.startswith("__")
     and callable(models.__dict__[name]))
@@ -63,7 +65,9 @@ parser.add_argument('--wd', '--weight-decay', default=1e-4, type=float,
 parser.add_argument('-p', '--print-freq', default=10, type=int,
                     metavar='N', help='print frequency (default: 10)')
 parser.add_argument('--resume', default='', type=str, metavar='PATH',
-                    help='path to latest checkpoint (default: None)')
+                    help='path to the checkpoint (default: None)')
+parser.add_argument('--pretrained', default='', type=str, metavar='PATH',
+                    help='path to pretrained checkpoint (default: None)')
 parser.add_argument('--seed', default=None, type=int,
                     help='seed for initializing training (default: None)')
 
@@ -74,6 +78,8 @@ parser.add_argument('--pred-dim', default=512, type=int,
                     help='hidden dimension of the predictor (default: 512)')
 parser.add_argument('--fix-pred-lr', action='store_true',
                     help='fix learning rate for the predictor (True if included; default: False)')
+
+best_acc1 = 0
 
 def main():
     """Program execution starts here."""
@@ -94,7 +100,7 @@ def main():
     main_worker(args)
     program_end_time = time.time()
     total_elapsed_time = int(program_end_time - program_start_time)
-    total_elapsed_hrs = total_elapsed_time // 60 // 60
+    total_elapsed_hrs = total_elapsed_time / 60 // 60
     total_elapsed_mins = (total_elapsed_time // 60) % 60
     total_elapsed_secs = total_elapsed_time % 60
 
@@ -104,6 +110,7 @@ def main():
 
 def main_worker(args):
     """Helper function for the main function."""
+    global best_acc1
     # Set the GPU device to use.
     print('Is CUDA available: ', torch.cuda.is_available())
     print('Is MPS available: ', torch.backends.mps.is_available())
@@ -118,42 +125,49 @@ def main_worker(args):
 
     print(f"Using {device_str.upper()} device...\n")
 
-    # Dataset
-    data_path = "./datasets/Car_Brand_Logos/"
-    train_folder_name = "Train/"
-    train_path = os.path.join(data_path, train_folder_name)
-    if not os.path.isdir(train_path):
-        raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), train_path)
-
     # Load the parameters of the pre-trained model in the saved checkpoint.
-    # if args.resume is not None:
-    #     if not os.path.isfile(args.resume): # args.resume is the path to the checkpoint
-    #         raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), args.resume)
-    #     checkpoint = torch.load(args.resume, map_location=gpu_device)
+    if args.pretrained:
+        print("=> loading pretrained checkpoint...")
+        if not os.path.isfile(args.pretrained): # args.pretrained is the path to the pretrained checkpoint
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), args.pretrained)
+        checkpoint = torch.load(args.pretrained, map_location=gpu_device)
 
-    # if args.resume: # if resuming from checkpoint, use same architecture as before.
-    #     args.arch = checkpoint['arch'] # architecture of the pretrained model (default: 'resnet50')
-    #     # Checkpoints are saved with fix_pred_lr set to True.
-    #     # So when loading checkpoints, fix_pred_lr must be set to True.
-    #     args.fix_pred_lr = True
+        # rename moco pre-trained keys
+        state_dict = checkpoint['state_dict']
+        for k in list(state_dict.keys()):
+            # retain only encoder up to before the embedding layer
+            if k.startswith('module.encoder') and not k.startswith('module.encoder.fc'):
+                # remove prefix
+                state_dict[k[len("module.encoder."):]] = state_dict[k]
+            # delete renamed or unused k
+            del state_dict[k]
+
+        args.start_epoch = 0
+        # If resuming from checkpoint, use same architecture as before.
+        args.arch = checkpoint['arch'] # 'resnet50' # architecture of the pretrained model (default: 'resnet50')
+        # Checkpoints are saved with fix_pred_lr set to True.
+        # So when loading checkpoints, fix_pred_lr must be set to True.
+        args.fix_pred_lr = True
 
     # Initialize SimSiam model and optimizer with the loaded parameters.
     print("=> creating model '{}'".format(args.arch))
     # model = simsiam.builder.SimSiam(
     #         models.__dict__[args.arch],
     #         args.dim, args.pred_dim)
-    
+
+
     model = models.__dict__[args.arch]()
-    checkpoint = torch.load(args.resume, map_location=gpu_device)
-            
+
     model.to(gpu_device) # Convert model format to make it suitable for current GPU device.
 
      # freeze all layers but the last fc
     for name, param in model.named_parameters():
         if name not in ['fc.weight', 'fc.bias']:
             param.requires_grad = False
+    # print(model) # prints default resnet50 architecture with 1000 output features in final fc layer.
 
     # init the fc layer
+    model.fc.out_features = 8 # number of car logo classes.
     model.fc.weight.data.normal_(mean=0.0, std=0.01)
     model.fc.bias.data.zero_()
 
@@ -171,18 +185,33 @@ def main_worker(args):
     parameters = list(filter(lambda p: p.requires_grad, model.parameters()))
     assert len(parameters) == 2  # fc.weight, fc.bias
 
-    
+
     #init_lr = lr * batch_size / 256 # infer learning rate before changing batch size
-    
+
     optimizer = torch.optim.SGD(parameters, init_lr,
                                 momentum=args.momentum,
                                 weight_decay=args.weight_decay)
-    if args.resume:
-        model.load_state_dict(checkpoint['state_dict'])
-        optimizer.load_state_dict(checkpoint['optimizer'])
+    if args.pretrained:
+        msg = model.load_state_dict(state_dict, strict=False)
+        assert set(msg.missing_keys) == {"fc.weight", "fc.bias"}
         if args.set_cp_epoch: # to resume training from the last saved epoch.
             args.start_epoch = checkpoint['epoch']
-    
+
+    # optionally resume from a lincls checkpoint
+    if args.resume:
+        if os.path.isfile(args.resume):
+            print("=> loading checkpoint '{}'".format(args.resume))
+            checkpoint = torch.load(args.resume, map_location=gpu_device)
+            args.start_epoch = checkpoint['epoch']
+            best_acc1 = checkpoint['best_acc1']
+            best_acc1 = best_acc1.to(gpu_device)
+            model.load_state_dict(checkpoint['state_dict'])
+            optimizer.load_state_dict(checkpoint['optimizer'])
+            print("=> loaded checkpoint '{}' (epoch {})"
+                  .format(args.resume, checkpoint['epoch']))
+        else:
+            print("=> no checkpoint found at '{}'".format(args.resume))
+
 
     # Data loading code
     traindir = os.path.join(args.data, 'Train')  # args.data = ./datasets/Car_Brand_Logos/Train
@@ -231,30 +260,24 @@ def main_worker(args):
                 'epoch': epoch + 1,
                 'arch': args.arch,
                 'state_dict': model.state_dict(),
+                'best_acc1': best_acc1,
                 'optimizer' : optimizer.state_dict(),
-            }, is_best)
-            # print(f"Checkpoint {epoch} saved.")  # for debugging
+            }, is_best=is_best, filename='checkpoint_lincls_{:04d}.pth.tar'.format(epoch))
+            print(f"Checkpoint {epoch} saved.")  # for debugging
 
 def train(train_loader, model, criterion, optimizer, epoch, args, device_str):
     """Train the SimSiam model."""
-    batch_time = AverageMeter('Time', ':6.3f')
-    data_time = AverageMeter('Data', ':6.3f')
-    losses = AverageMeter('Loss', ':.4f')
-    top1 = AverageMeter('Acc@1', ':6.2f')
-    top5 = AverageMeter('Acc@5', ':6.2f')
-    progress = ProgressMeter(
-        len(train_loader),
-        [batch_time, data_time, losses],
-        prefix="Epoch: [{}]".format(epoch))
+    batch_time = AverageMeter('Time (s):', ':6.3f')
+    losses = AverageMeter('Loss:', ':.4f')
+    top1 = AverageMeter('Acc@1:', ':6.2f')
+    top5 = AverageMeter('Acc@5:', ':6.2f')
+    progress = ProgressMeter(len(train_loader), [batch_time, losses], prefix="Epoch: [{}]".format(epoch))
 
     # switch to eval mode
     model.eval()
 
     end = time.time()
     for i, (images, target) in enumerate(train_loader):
-        # measure data loading time
-        data_time.update(time.time() - end)
-
         # This should work for a single Nvidia or Apple GPU.
         if device_str == "cuda":
             images = images.cuda(non_blocking=True) # need non-blocking if using pin memory for CUDA
@@ -290,21 +313,16 @@ def validate(val_loader, model, criterion, device_str, args):
     # model.load_state_dict(torch.load("./checkpoints/checkpoint_0009.pth.tar"))
     # model = torch.nn.DataParallel(model) # Implement data parallelism at the module level.
     # model.to(gpu_device) # Convert model format to make it suitable for current GPU device.
-    batch_time = AverageMeter('Time', ':6.3f')
-    losses = AverageMeter('Loss', ':.4e')
-    top1 = AverageMeter('Acc@1', ':6.2f')
-    top5 = AverageMeter('Acc@5', ':6.2f')
-    progress = ProgressMeter(
-        len(val_loader),
-        [batch_time, losses, top1, top5],
-        prefix='Test: ')
-    
+    batch_time = AverageMeter('Time (s):', ':6.3f')
+    losses = AverageMeter('Loss:', ':.4e')
+    top1 = AverageMeter('Acc@1:', ':6.2f')
+    top5 = AverageMeter('Acc@5:', ':6.2f')
+    progress = ProgressMeter(len(val_loader), [batch_time, losses, top1, top5], prefix='Test: ')
+
     model.eval()
 
     with torch.no_grad():
-        # end = time.time()
-        # nSamples = len(val_loader)
-        # print(type(val_loader))
+        end = time.time()
         for i, (images, target) in enumerate(val_loader):
 
             # This should work for a single Nvidia or Apple GPU.
@@ -340,7 +358,7 @@ def validate(val_loader, model, criterion, device_str, args):
         # TODO: this should also be done with the ProgressMeter
         print(' * Acc@1 {top1.avg:.3f} Acc@5 {top5.avg:.3f}'
               .format(top1=top1, top5=top5))
-        
+
     return top1.avg
 
 def accuracy(output, target, topk=(1,)):
@@ -364,7 +382,7 @@ def save_checkpoint(state, is_best, filename='checkpoint.pth.tar'):
     Save the neural network model's parameters to a .tar checkpoint file.
     All checkpoints are stored in the checkpoints/ folder of the current directory.
     """
-    filename = os.path.join("./checkpoints/", filename)
+    filename = os.path.join("./cls_checkpoints/", filename)
     torch.save(state, filename)
     if is_best:
         shutil.copyfile(filename, 'model_best.pth.tar')
@@ -381,7 +399,7 @@ def adjust_learning_rate(optimizer, init_lr, epoch, args):
 
 
 class AverageMeter(object):
-    """Computes and stores the average and current value."""
+    """Computes and stores the average and current value"""
     def __init__(self, name, fmt=':f'):
         self.name = name
         self.fmt = fmt

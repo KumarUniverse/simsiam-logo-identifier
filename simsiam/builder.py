@@ -31,7 +31,7 @@ class SimSiam(nn.Module):
                                         nn.Linear(prev_dim, prev_dim, bias=False),
                                         nn.BatchNorm1d(prev_dim),
                                         nn.ReLU(inplace=True), # second layer
-                                        self.encoder.fc,
+                                        self.encoder.fc, # (default: resnet50 backbone)
                                         nn.BatchNorm1d(dim, affine=False)) # output layer
         self.encoder.fc[6].bias.requires_grad = False # hack: not use bias as it is followed by BN
 
