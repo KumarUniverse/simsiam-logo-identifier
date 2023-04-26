@@ -1,0 +1,24 @@
+Is CUDA available:  False
+Is MPS available:  True
+Using MPS device...
+
+=> creating model 'efficientnet_v2_s'
+Epoch: [0][ 0/78]	Time (s): 18.959	Loss: 0.0036
+Epoch: [0][10/78]	Time (s):  4.961	Loss: -0.0133
+Epoch: [0][20/78]	Time (s):  4.568	Loss: -0.0410
+Epoch: [0][30/78]	Time (s):  4.865	Loss: -0.1153
+Epoch: [0][40/78]	Time (s):  4.895	Loss: -0.3795
+Epoch: [0][50/78]	Time (s):  4.502	Loss: -0.6048
+Epoch: [0][60/78]	Time (s):  5.087	Loss: -0.6220
+Epoch: [0][70/78]	Time (s):  4.256	Loss: -0.6955
+Epoch: [1][ 0/78]	Time (s): 19.659	Loss: -0.6935
+Epoch: [1][10/78]	Time (s):  4.546	Loss: -0.7450
+Epoch: [1][20/78]	Time (s):  4.740	Loss: -0.7859
+Epoch: [1][30/78]	Time (s):  5.776	Loss: -0.6845
+Epoch: [1][40/78]	Time (s):  6.950	Loss: -0.7824
+Epoch: [1][50/78]	Time (s):  5.508	Loss: -0.7651
+Epoch: [1][60/78]	Time (s):  4.614	Loss: -0.7864
+Epoch: [1][70/78]	Time (s):  4.313	Loss: -0.7769
+Epoch: [2][ 0/78]	Time (s): 16.276	Loss: -0.8018
+Epoch: [2][10/78]	Time (s):  4.424	Loss: -0.8110
+Epoch: [2][20/78]	Time (s):  4.060	Loss: -0.8300

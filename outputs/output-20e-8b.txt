@@ -1,0 +1,650 @@
+Is CUDA available:  False
+Is MPS available:  True
+Using MPS device...
+
+=> creating model 'resnet50'
+Epoch: [0][  0/314]	Time (s):  7.387	Loss: -0.3217
+Epoch: [0][ 10/314]	Time (s):  0.513	Loss: -0.0409
+Epoch: [0][ 20/314]	Time (s):  0.508	Loss: -0.0670
+Epoch: [0][ 30/314]	Time (s):  0.503	Loss: -0.0435
+Epoch: [0][ 40/314]	Time (s):  0.506	Loss: -0.0538
+Epoch: [0][ 50/314]	Time (s):  0.506	Loss: -0.0654
+Epoch: [0][ 60/314]	Time (s):  0.507	Loss: -0.0647
+Epoch: [0][ 70/314]	Time (s):  0.507	Loss: -0.0352
+Epoch: [0][ 80/314]	Time (s):  0.506	Loss: -0.0708
+Epoch: [0][ 90/314]	Time (s):  0.507	Loss: -0.1138
+Epoch: [0][100/314]	Time (s):  0.507	Loss: -0.0686
+Epoch: [0][110/314]	Time (s):  0.506	Loss: -0.0858
+Epoch: [0][120/314]	Time (s):  0.506	Loss: -0.0795
+Epoch: [0][130/314]	Time (s):  0.505	Loss: -0.0454
+Epoch: [0][140/314]	Time (s):  0.512	Loss: -0.0835
+Epoch: [0][150/314]	Time (s):  0.509	Loss: -0.1220
+Epoch: [0][160/314]	Time (s):  0.526	Loss: -0.1649
+Epoch: [0][170/314]	Time (s):  0.551	Loss: -0.1871
+Epoch: [0][180/314]	Time (s):  0.596	Loss: -0.1993
+Epoch: [0][190/314]	Time (s):  0.666	Loss: -0.2726
+Epoch: [0][200/314]	Time (s):  0.712	Loss: -0.2906
+Epoch: [0][210/314]	Time (s):  0.772	Loss: -0.2396
+Epoch: [0][220/314]	Time (s):  0.811	Loss: -0.2637
+Epoch: [0][230/314]	Time (s):  0.851	Loss: -0.2684
+Epoch: [0][240/314]	Time (s):  0.860	Loss: -0.2062
+Epoch: [0][250/314]	Time (s):  0.835	Loss: -0.0442
+Epoch: [0][260/314]	Time (s):  0.837	Loss: -0.3049
+Epoch: [0][270/314]	Time (s):  0.768	Loss: -0.1179
+Epoch: [0][280/314]	Time (s):  0.762	Loss: -0.3040
+Epoch: [0][290/314]	Time (s):  0.762	Loss: -0.5119
+Epoch: [0][300/314]	Time (s):  0.739	Loss: -0.5056
+Epoch: [0][310/314]	Time (s):  0.700	Loss: -0.5072
+Epoch: [1][  0/314]	Time (s):  6.483	Loss: -0.5309
+Epoch: [1][ 10/314]	Time (s):  0.503	Loss: -0.3198
+Epoch: [1][ 20/314]	Time (s):  0.505	Loss: -0.5067
+Epoch: [1][ 30/314]	Time (s):  0.502	Loss: -0.5565
+Epoch: [1][ 40/314]	Time (s):  0.509	Loss: -0.4362
+Epoch: [1][ 50/314]	Time (s):  0.507	Loss: -0.4973
+Epoch: [1][ 60/314]	Time (s):  0.510	Loss: -0.4578
+Epoch: [1][ 70/314]	Time (s):  0.514	Loss: -0.4212
+Epoch: [1][ 80/314]	Time (s):  0.524	Loss: -0.5462
+Epoch: [1][ 90/314]	Time (s):  0.557	Loss: -0.4034
+Epoch: [1][100/314]	Time (s):  0.606	Loss: -0.7673
+Epoch: [1][110/314]	Time (s):  0.671	Loss: -0.5763
+Epoch: [1][120/314]	Time (s):  0.737	Loss: -0.5033
+Epoch: [1][130/314]	Time (s):  0.827	Loss: -0.6877
+Epoch: [1][140/314]	Time (s):  0.908	Loss: -0.5425
+Epoch: [1][150/314]	Time (s):  0.898	Loss: -0.6980
+Epoch: [1][160/314]	Time (s):  0.877	Loss: -0.7291
+Epoch: [1][170/314]	Time (s):  0.840	Loss: -0.8577
+Epoch: [1][180/314]	Time (s):  0.845	Loss: -0.6691
+Epoch: [1][190/314]	Time (s):  0.797	Loss: -0.6638
+Epoch: [1][200/314]	Time (s):  0.767	Loss: -0.5335
+Epoch: [1][210/314]	Time (s):  0.797	Loss: -0.4889
+Epoch: [1][220/314]	Time (s):  0.783	Loss: -0.8685
+Epoch: [1][230/314]	Time (s):  0.769	Loss: -0.9283
+Epoch: [1][240/314]	Time (s):  0.750	Loss: -0.9309
+Epoch: [1][250/314]	Time (s):  0.760	Loss: -0.6843
+Epoch: [1][260/314]	Time (s):  0.781	Loss: -0.7105
+Epoch: [1][270/314]	Time (s):  0.792	Loss: -0.4167
+Epoch: [1][280/314]	Time (s):  0.794	Loss: -0.4530
+Epoch: [1][290/314]	Time (s):  0.822	Loss: -0.9331
+Epoch: [1][300/314]	Time (s):  0.753	Loss: -0.5508
+Epoch: [1][310/314]	Time (s):  0.715	Loss: -0.7187
+Epoch: [2][  0/314]	Time (s):  6.482	Loss: -0.4442
+Epoch: [2][ 10/314]	Time (s):  0.501	Loss: -0.7079
+Epoch: [2][ 20/314]	Time (s):  0.498	Loss: -0.6959
+Epoch: [2][ 30/314]	Time (s):  0.502	Loss: -0.8255
+Epoch: [2][ 40/314]	Time (s):  0.501	Loss: -0.7194
+Epoch: [2][ 50/314]	Time (s):  0.499	Loss: -0.9662
+Epoch: [2][ 60/314]	Time (s):  0.504	Loss: -0.7301
+Epoch: [2][ 70/314]	Time (s):  0.506	Loss: -0.6390
+Epoch: [2][ 80/314]	Time (s):  0.517	Loss: -0.7550
+Epoch: [2][ 90/314]	Time (s):  0.551	Loss: -0.7337
+Epoch: [2][100/314]	Time (s):  0.599	Loss: -0.7301
+Epoch: [2][110/314]	Time (s):  0.690	Loss: 0.0381
+Epoch: [2][120/314]	Time (s):  0.734	Loss: -0.9851
+Epoch: [2][130/314]	Time (s):  0.822	Loss: -0.4811
+Epoch: [2][140/314]	Time (s):  0.906	Loss: -0.7486
+Epoch: [2][150/314]	Time (s):  0.906	Loss: -0.3987
+Epoch: [2][160/314]	Time (s):  0.886	Loss: -0.7388
+Epoch: [2][170/314]	Time (s):  0.882	Loss: -0.9918
+Epoch: [2][180/314]	Time (s):  0.860	Loss: -0.2648
+Epoch: [2][190/314]	Time (s):  0.826	Loss: -0.4786
+Epoch: [2][200/314]	Time (s):  0.800	Loss: -0.9926
+Epoch: [2][210/314]	Time (s):  0.785	Loss: -0.6709
+Epoch: [2][220/314]	Time (s):  0.765	Loss: -0.5571
+Epoch: [2][230/314]	Time (s):  0.763	Loss: -0.3553
+Epoch: [2][240/314]	Time (s):  0.758	Loss: -0.6372
+Epoch: [2][250/314]	Time (s):  0.773	Loss: -0.8287
+Epoch: [2][260/314]	Time (s):  0.771	Loss: -0.9552
+Epoch: [2][270/314]	Time (s):  0.795	Loss: -0.7390
+Epoch: [2][280/314]	Time (s):  0.738	Loss: -0.7414
+Epoch: [2][290/314]	Time (s):  0.741	Loss: -0.0166
+Epoch: [2][300/314]	Time (s):  0.748	Loss: -0.3876
+Epoch: [2][310/314]	Time (s):  0.714	Loss: -0.4176
+Epoch: [3][  0/314]	Time (s):  6.499	Loss: -0.9934
+Epoch: [3][ 10/314]	Time (s):  0.500	Loss: -0.7465
+Epoch: [3][ 20/314]	Time (s):  0.502	Loss: -0.8403
+Epoch: [3][ 30/314]	Time (s):  0.500	Loss: -0.4127
+Epoch: [3][ 40/314]	Time (s):  0.505	Loss: -0.2387
+Epoch: [3][ 50/314]	Time (s):  0.503	Loss: -0.8618
+Epoch: [3][ 60/314]	Time (s):  0.504	Loss: -0.9919
+Epoch: [3][ 70/314]	Time (s):  0.506	Loss: -0.2951
+Epoch: [3][ 80/314]	Time (s):  0.503	Loss: -0.5234
+Epoch: [3][ 90/314]	Time (s):  0.507	Loss: -0.8586
+Epoch: [3][100/314]	Time (s):  0.502	Loss: -0.9854
+Epoch: [3][110/314]	Time (s):  0.520	Loss: -0.4895
+Epoch: [3][120/314]	Time (s):  0.931	Loss: -0.7740
+Epoch: [3][130/314]	Time (s):  1.911	Loss: -0.8275
+Epoch: [3][140/314]	Time (s):  1.456	Loss: -0.5038
+Epoch: [3][150/314]	Time (s):  1.073	Loss: -0.5304
+Epoch: [3][160/314]	Time (s):  0.901	Loss: -0.7768
+Epoch: [3][170/314]	Time (s):  0.805	Loss: -0.9903
+Epoch: [3][180/314]	Time (s):  0.792	Loss: -0.7431
+Epoch: [3][190/314]	Time (s):  0.764	Loss: -0.9944
+Epoch: [3][200/314]	Time (s):  0.733	Loss: -0.5572
+Epoch: [3][210/314]	Time (s):  0.728	Loss: -0.5703
+Epoch: [3][220/314]	Time (s):  0.732	Loss: -0.8039
+Epoch: [3][230/314]	Time (s):  0.731	Loss: -0.7799
+Epoch: [3][240/314]	Time (s):  0.732	Loss: -0.9781
+Epoch: [3][250/314]	Time (s):  0.751	Loss: -0.8822
+Epoch: [3][260/314]	Time (s):  0.743	Loss: -0.5115
+Epoch: [3][270/314]	Time (s):  0.738	Loss: -0.8748
+Epoch: [3][280/314]	Time (s):  0.764	Loss: -0.9982
+Epoch: [3][290/314]	Time (s):  0.775	Loss: -0.2498
+Epoch: [3][300/314]	Time (s):  0.749	Loss: -0.9980
+Epoch: [3][310/314]	Time (s):  0.719	Loss: -0.7486
+Epoch: [4][  0/314]	Time (s):  6.555	Loss: 0.1159
+Epoch: [4][ 10/314]	Time (s):  0.500	Loss: -0.2480
+Epoch: [4][ 20/314]	Time (s):  0.503	Loss: -0.1065
+Epoch: [4][ 30/314]	Time (s):  0.508	Loss: -0.5289
+Epoch: [4][ 40/314]	Time (s):  0.504	Loss: -0.9802
+Epoch: [4][ 50/314]	Time (s):  0.504	Loss: -0.8841
+Epoch: [4][ 60/314]	Time (s):  0.507	Loss: -0.8697
+Epoch: [4][ 70/314]	Time (s):  0.517	Loss: -0.2417
+Epoch: [4][ 80/314]	Time (s):  0.541	Loss: -0.1782
+Epoch: [4][ 90/314]	Time (s):  0.590	Loss: -0.6674
+Epoch: [4][100/314]	Time (s):  0.653	Loss: -0.5675
+Epoch: [4][110/314]	Time (s):  0.730	Loss: -0.9655
+Epoch: [4][120/314]	Time (s):  0.837	Loss: -0.7011
+Epoch: [4][130/314]	Time (s):  0.873	Loss: -0.3076
+Epoch: [4][140/314]	Time (s):  0.940	Loss: -0.9279
+Epoch: [4][150/314]	Time (s):  0.905	Loss: -0.9971
+Epoch: [4][160/314]	Time (s):  0.887	Loss: -0.4988
+Epoch: [4][170/314]	Time (s):  0.844	Loss: -0.5334
+Epoch: [4][180/314]	Time (s):  0.807	Loss: -0.5055
+Epoch: [4][190/314]	Time (s):  0.794	Loss: -0.7626
+Epoch: [4][200/314]	Time (s):  0.778	Loss: -0.8995
+Epoch: [4][210/314]	Time (s):  0.786	Loss: -0.4985
+Epoch: [4][220/314]	Time (s):  0.829	Loss: -0.7613
+Epoch: [4][230/314]	Time (s):  0.775	Loss: -0.9933
+Epoch: [4][240/314]	Time (s):  0.765	Loss: -0.4380
+Epoch: [4][250/314]	Time (s):  0.770	Loss: -0.7476
+Epoch: [4][260/314]	Time (s):  0.750	Loss: -0.9973
+Epoch: [4][270/314]	Time (s):  0.751	Loss: -0.9977
+Epoch: [4][280/314]	Time (s):  0.780	Loss: -0.7553
+Epoch: [4][290/314]	Time (s):  0.745	Loss: -0.9980
+Epoch: [4][300/314]	Time (s):  0.752	Loss: -0.5003
+Epoch: [4][310/314]	Time (s):  0.742	Loss: -0.3850
+Epoch: [5][  0/314]	Time (s):  6.676	Loss: -0.7573
+Epoch: [5][ 10/314]	Time (s):  0.513	Loss: -0.7857
+Epoch: [5][ 20/314]	Time (s):  0.504	Loss: -0.7881
+Epoch: [5][ 30/314]	Time (s):  0.518	Loss: -0.3756
+Epoch: [5][ 40/314]	Time (s):  0.508	Loss: -0.1927
+Epoch: [5][ 50/314]	Time (s):  0.512	Loss: -0.7645
+Epoch: [5][ 60/314]	Time (s):  0.508	Loss: -0.9963
+Epoch: [5][ 70/314]	Time (s):  0.530	Loss: -0.9627
+Epoch: [5][ 80/314]	Time (s):  0.720	Loss: -0.9208
+Epoch: [5][ 90/314]	Time (s):  0.931	Loss: -0.5024
+Epoch: [5][100/314]	Time (s):  1.137	Loss: -0.9352
+Epoch: [5][110/314]	Time (s):  1.327	Loss: -0.4694
+Epoch: [5][120/314]	Time (s):  1.014	Loss: -0.7522
+Epoch: [5][130/314]	Time (s):  0.948	Loss: -0.6314
+Epoch: [5][140/314]	Time (s):  0.970	Loss: -0.9979
+Epoch: [5][150/314]	Time (s):  0.907	Loss: -0.7487
+Epoch: [5][160/314]	Time (s):  0.816	Loss: -0.5344
+Epoch: [5][170/314]	Time (s):  0.780	Loss: -0.8801
+Epoch: [5][180/314]	Time (s):  0.780	Loss: -0.5914
+Epoch: [5][190/314]	Time (s):  0.818	Loss: -0.9892
+Epoch: [5][200/314]	Time (s):  0.804	Loss: -0.2527
+Epoch: [5][210/314]	Time (s):  0.776	Loss: -0.9935
+Epoch: [5][220/314]	Time (s):  0.789	Loss: -0.5114
+Epoch: [5][230/314]	Time (s):  0.873	Loss: -0.2494
+Epoch: [5][240/314]	Time (s):  0.855	Loss: -0.7601
+Epoch: [5][250/314]	Time (s):  0.770	Loss: -0.7434
+Epoch: [5][260/314]	Time (s):  0.797	Loss: -0.9968
+Epoch: [5][270/314]	Time (s):  0.787	Loss: -0.6780
+Epoch: [5][280/314]	Time (s):  0.800	Loss: -0.0385
+Epoch: [5][290/314]	Time (s):  0.867	Loss: -0.2464
+Epoch: [5][300/314]	Time (s):  0.766	Loss: -0.2827
+Epoch: [5][310/314]	Time (s):  0.796	Loss: -0.2543
+Epoch: [6][  0/314]	Time (s):  6.621	Loss: -0.6416
+Epoch: [6][ 10/314]	Time (s):  0.511	Loss: -0.8556
+Epoch: [6][ 20/314]	Time (s):  0.508	Loss: -0.8706
+Epoch: [6][ 30/314]	Time (s):  0.515	Loss: -0.0213
+Epoch: [6][ 40/314]	Time (s):  0.510	Loss: -0.6675
+Epoch: [6][ 50/314]	Time (s):  0.509	Loss: -0.7463
+Epoch: [6][ 60/314]	Time (s):  0.528	Loss: -0.5053
+Epoch: [6][ 70/314]	Time (s):  0.502	Loss: -0.4914
+Epoch: [6][ 80/314]	Time (s):  0.552	Loss: -0.6558
+Epoch: [6][ 90/314]	Time (s):  0.725	Loss: -0.2521
+Epoch: [6][100/314]	Time (s):  0.927	Loss: -0.9821
+Epoch: [6][110/314]	Time (s):  1.159	Loss: -0.9770
+Epoch: [6][120/314]	Time (s):  1.127	Loss: -0.5078
+Epoch: [6][130/314]	Time (s):  0.983	Loss: -0.7418
+Epoch: [6][140/314]	Time (s):  0.898	Loss: -0.7137
+Epoch: [6][150/314]	Time (s):  0.844	Loss: -0.0182
+Epoch: [6][160/314]	Time (s):  0.820	Loss: -0.9614
+Epoch: [6][170/314]	Time (s):  0.828	Loss: -0.7488
+Epoch: [6][180/314]	Time (s):  0.789	Loss: -0.9968
+Epoch: [6][190/314]	Time (s):  0.825	Loss: -0.9952
+Epoch: [6][200/314]	Time (s):  0.751	Loss: -0.5071
+Epoch: [6][210/314]	Time (s):  0.748	Loss: -0.9972
+Epoch: [6][220/314]	Time (s):  0.770	Loss: -0.7514
+Epoch: [6][230/314]	Time (s):  0.774	Loss: -0.7448
+Epoch: [6][240/314]	Time (s):  0.745	Loss: -0.8910
+Epoch: [6][250/314]	Time (s):  1.049	Loss: -0.9381
+Epoch: [6][260/314]	Time (s):  0.826	Loss: -0.7563
+Epoch: [6][270/314]	Time (s):  0.811	Loss: -0.7601
+Epoch: [6][280/314]	Time (s):  0.801	Loss: -0.9959
+Epoch: [6][290/314]	Time (s):  0.786	Loss: -0.5130
+Epoch: [6][300/314]	Time (s):  0.768	Loss: -0.4998
+Epoch: [6][310/314]	Time (s):  0.748	Loss: -0.7485
+Epoch: [7][  0/314]	Time (s):  6.832	Loss: -0.7470
+Epoch: [7][ 10/314]	Time (s):  0.513	Loss: -0.7490
+Epoch: [7][ 20/314]	Time (s):  0.507	Loss: -0.6291
+Epoch: [7][ 30/314]	Time (s):  0.509	Loss: -0.7319
+Epoch: [7][ 40/314]	Time (s):  0.512	Loss: -0.7464
+Epoch: [7][ 50/314]	Time (s):  0.510	Loss: -0.7553
+Epoch: [7][ 60/314]	Time (s):  0.510	Loss: 0.1801
+Epoch: [7][ 70/314]	Time (s):  0.508	Loss: -0.4906
+Epoch: [7][ 80/314]	Time (s):  0.548	Loss: -0.9846
+Epoch: [7][ 90/314]	Time (s):  0.736	Loss: -0.9958
+Epoch: [7][100/314]	Time (s):  1.004	Loss: -0.7697
+Epoch: [7][110/314]	Time (s):  1.167	Loss: -0.9608
+Epoch: [7][120/314]	Time (s):  1.103	Loss: -0.7452
+Epoch: [7][130/314]	Time (s):  0.979	Loss: -0.9990
+Epoch: [7][140/314]	Time (s):  0.901	Loss: -0.7517
+Epoch: [7][150/314]	Time (s):  1.132	Loss: -0.5048
+Epoch: [7][160/314]	Time (s):  0.808	Loss: -0.8119
+Epoch: [7][170/314]	Time (s):  0.814	Loss: -0.8797
+Epoch: [7][180/314]	Time (s):  0.771	Loss: -0.4504
+Epoch: [7][190/314]	Time (s):  0.798	Loss: -0.6105
+Epoch: [7][200/314]	Time (s):  0.890	Loss: -0.5000
+Epoch: [7][210/314]	Time (s):  0.837	Loss: -0.7767
+Epoch: [7][220/314]	Time (s):  0.947	Loss: -0.7489
+Epoch: [7][230/314]	Time (s):  0.892	Loss: -0.5600
+Epoch: [7][240/314]	Time (s):  0.834	Loss: -0.4771
+Epoch: [7][250/314]	Time (s):  0.785	Loss: -0.5010
+Epoch: [7][260/314]	Time (s):  1.097	Loss: -0.7468
+Epoch: [7][270/314]	Time (s):  0.826	Loss: -0.2306
+Epoch: [7][280/314]	Time (s):  0.814	Loss: -0.9916
+Epoch: [7][290/314]	Time (s):  0.788	Loss: -0.6549
+Epoch: [7][300/314]	Time (s):  0.979	Loss: -0.5691
+Epoch: [7][310/314]	Time (s):  0.934	Loss: -0.7565
+Epoch: [8][  0/314]	Time (s):  6.631	Loss: -0.3789
+Epoch: [8][ 10/314]	Time (s):  0.513	Loss: -0.7489
+Epoch: [8][ 20/314]	Time (s):  0.507	Loss: -0.9994
+Epoch: [8][ 30/314]	Time (s):  0.509	Loss: -0.2585
+Epoch: [8][ 40/314]	Time (s):  0.505	Loss: -0.5024
+Epoch: [8][ 50/314]	Time (s):  0.510	Loss: -0.9427
+Epoch: [8][ 60/314]	Time (s):  0.512	Loss: -0.5076
+Epoch: [8][ 70/314]	Time (s):  0.517	Loss: -0.4999
+Epoch: [8][ 80/314]	Time (s):  0.610	Loss: -0.9920
+Epoch: [8][ 90/314]	Time (s):  0.833	Loss: 0.0554
+Epoch: [8][100/314]	Time (s):  1.063	Loss: -0.0719
+Epoch: [8][110/314]	Time (s):  1.139	Loss: -0.5011
+Epoch: [8][120/314]	Time (s):  1.319	Loss: -0.4107
+Epoch: [8][130/314]	Time (s):  0.946	Loss: -0.9975
+Epoch: [8][140/314]	Time (s):  0.903	Loss: -0.4581
+Epoch: [8][150/314]	Time (s):  0.848	Loss: -0.5058
+Epoch: [8][160/314]	Time (s):  0.792	Loss: -0.0528
+Epoch: [8][170/314]	Time (s):  0.777	Loss: -0.3046
+Epoch: [8][180/314]	Time (s):  0.784	Loss: -0.9954
+Epoch: [8][190/314]	Time (s):  0.869	Loss: -0.7521
+Epoch: [8][200/314]	Time (s):  0.771	Loss: -0.8646
+Epoch: [8][210/314]	Time (s):  0.881	Loss: -0.7500
+Epoch: [8][220/314]	Time (s):  0.757	Loss: -0.8927
+Epoch: [8][230/314]	Time (s):  0.777	Loss: -0.7545
+Epoch: [8][240/314]	Time (s):  0.777	Loss: -0.9994
+Epoch: [8][250/314]	Time (s):  0.772	Loss: -0.7352
+Epoch: [8][260/314]	Time (s):  0.770	Loss: -0.9177
+Epoch: [8][270/314]	Time (s):  0.857	Loss: -0.9873
+Epoch: [8][280/314]	Time (s):  0.824	Loss: -0.7490
+Epoch: [8][290/314]	Time (s):  0.793	Loss: -0.9980
+Epoch: [8][300/314]	Time (s):  0.765	Loss: -0.6070
+Epoch: [8][310/314]	Time (s):  0.741	Loss: -0.5213
+Epoch: [9][  0/314]	Time (s):  6.480	Loss: -0.7750
+Epoch: [9][ 10/314]	Time (s):  0.508	Loss: -0.5008
+Epoch: [9][ 20/314]	Time (s):  0.509	Loss: -0.7499
+Epoch: [9][ 30/314]	Time (s):  0.509	Loss: -0.5386
+Epoch: [9][ 40/314]	Time (s):  0.507	Loss: -0.7464
+Epoch: [9][ 50/314]	Time (s):  0.509	Loss: -0.9224
+Epoch: [9][ 60/314]	Time (s):  0.510	Loss: -0.5058
+Epoch: [9][ 70/314]	Time (s):  0.511	Loss: -0.8737
+Epoch: [9][ 80/314]	Time (s):  0.503	Loss: -0.7269
+Epoch: [9][ 90/314]	Time (s):  0.509	Loss: -0.6250
+Epoch: [9][100/314]	Time (s):  0.616	Loss: -0.7458
+Epoch: [9][110/314]	Time (s):  1.091	Loss: -0.3375
+Epoch: [9][120/314]	Time (s):  1.771	Loss: -0.3169
+Epoch: [9][130/314]	Time (s):  1.243	Loss: -0.7346
+Epoch: [9][140/314]	Time (s):  0.975	Loss: -0.7480
+Epoch: [9][150/314]	Time (s):  0.857	Loss: -0.7489
+Epoch: [9][160/314]	Time (s):  0.801	Loss: -0.5162
+Epoch: [9][170/314]	Time (s):  0.785	Loss: -0.4892
+Epoch: [9][180/314]	Time (s):  0.759	Loss: -0.4982
+Epoch: [9][190/314]	Time (s):  0.751	Loss: -0.7992
+Epoch: [9][200/314]	Time (s):  0.723	Loss: -0.5070
+Epoch: [9][210/314]	Time (s):  0.743	Loss: -0.9987
+Epoch: [9][220/314]	Time (s):  0.732	Loss: -0.7504
+Epoch: [9][230/314]	Time (s):  0.736	Loss: -0.7139
+Epoch: [9][240/314]	Time (s):  0.739	Loss: -0.4501
+Epoch: [9][250/314]	Time (s):  0.776	Loss: -0.1812
+Epoch: [9][260/314]	Time (s):  0.744	Loss: -0.9990
+Epoch: [9][270/314]	Time (s):  0.744	Loss: -0.9988
+Epoch: [9][280/314]	Time (s):  0.747	Loss: -0.2712
+Epoch: [9][290/314]	Time (s):  0.733	Loss: -0.5002
+Epoch: [9][300/314]	Time (s):  0.736	Loss: -0.9981
+Epoch: [9][310/314]	Time (s):  0.707	Loss: -0.7573
+Epoch: [10][  0/314]	Time (s):  6.591	Loss: -0.9051
+Epoch: [10][ 10/314]	Time (s):  0.502	Loss: -0.5064
+Epoch: [10][ 20/314]	Time (s):  0.504	Loss: -0.7002
+Epoch: [10][ 30/314]	Time (s):  0.510	Loss: -0.7763
+Epoch: [10][ 40/314]	Time (s):  0.507	Loss: -0.2564
+Epoch: [10][ 50/314]	Time (s):  0.508	Loss: -0.6473
+Epoch: [10][ 60/314]	Time (s):  0.505	Loss: -0.9883
+Epoch: [10][ 70/314]	Time (s):  0.515	Loss: -0.5000
+Epoch: [10][ 80/314]	Time (s):  0.537	Loss: -0.9994
+Epoch: [10][ 90/314]	Time (s):  0.575	Loss: -0.4244
+Epoch: [10][100/314]	Time (s):  0.625	Loss: -0.8883
+Epoch: [10][110/314]	Time (s):  0.693	Loss: -0.3262
+Epoch: [10][120/314]	Time (s):  0.779	Loss: -0.7744
+Epoch: [10][130/314]	Time (s):  0.875	Loss: -0.9994
+Epoch: [10][140/314]	Time (s):  0.909	Loss: -0.2538
+Epoch: [10][150/314]	Time (s):  0.922	Loss: -0.7294
+Epoch: [10][160/314]	Time (s):  0.897	Loss: -0.5226
+Epoch: [10][170/314]	Time (s):  0.859	Loss: -0.8938
+Epoch: [10][180/314]	Time (s):  0.865	Loss: -0.2657
+Epoch: [10][190/314]	Time (s):  0.798	Loss: -0.7190
+Epoch: [10][200/314]	Time (s):  0.807	Loss: -0.8022
+Epoch: [10][210/314]	Time (s):  0.769	Loss: -0.2598
+Epoch: [10][220/314]	Time (s):  0.753	Loss: -0.5053
+Epoch: [10][230/314]	Time (s):  0.746	Loss: -0.7477
+Epoch: [10][240/314]	Time (s):  0.748	Loss: -0.9977
+Epoch: [10][250/314]	Time (s):  0.743	Loss: -0.4989
+Epoch: [10][260/314]	Time (s):  0.744	Loss: -0.3889
+Epoch: [10][270/314]	Time (s):  0.766	Loss: -0.7504
+Epoch: [10][280/314]	Time (s):  0.744	Loss: 0.1458
+Epoch: [10][290/314]	Time (s):  0.781	Loss: -0.9978
+Epoch: [10][300/314]	Time (s):  0.746	Loss: -0.5014
+Epoch: [10][310/314]	Time (s):  0.723	Loss: -0.7491
+Epoch: [11][  0/314]	Time (s):  6.601	Loss: -0.9211
+Epoch: [11][ 10/314]	Time (s):  0.506	Loss: -0.7611
+Epoch: [11][ 20/314]	Time (s):  0.506	Loss: -0.9975
+Epoch: [11][ 30/314]	Time (s):  0.508	Loss: -0.8490
+Epoch: [11][ 40/314]	Time (s):  0.508	Loss: -0.9493
+Epoch: [11][ 50/314]	Time (s):  0.516	Loss: -0.6419
+Epoch: [11][ 60/314]	Time (s):  0.531	Loss: -0.6379
+Epoch: [11][ 70/314]	Time (s):  0.514	Loss: -0.9902
+Epoch: [11][ 80/314]	Time (s):  0.512	Loss: -0.6369
+Epoch: [11][ 90/314]	Time (s):  0.511	Loss: -0.8723
+Epoch: [11][100/314]	Time (s):  0.758	Loss: -0.9980
+Epoch: [11][110/314]	Time (s):  1.537	Loss: -0.7493
+Epoch: [11][120/314]	Time (s):  1.489	Loss: -0.7703
+Epoch: [11][130/314]	Time (s):  1.134	Loss: -0.4938
+Epoch: [11][140/314]	Time (s):  0.940	Loss: -0.9868
+Epoch: [11][150/314]	Time (s):  0.919	Loss: -0.8745
+Epoch: [11][160/314]	Time (s):  0.831	Loss: -0.7498
+Epoch: [11][170/314]	Time (s):  0.815	Loss: -0.5013
+Epoch: [11][180/314]	Time (s):  0.806	Loss: -0.7497
+Epoch: [11][190/314]	Time (s):  0.765	Loss: -0.3749
+Epoch: [11][200/314]	Time (s):  0.773	Loss: -0.3493
+Epoch: [11][210/314]	Time (s):  0.892	Loss: -0.5038
+Epoch: [11][220/314]	Time (s):  0.847	Loss: -0.7372
+Epoch: [11][230/314]	Time (s):  0.819	Loss: -0.9985
+Epoch: [11][240/314]	Time (s):  0.793	Loss: -0.8975
+Epoch: [11][250/314]	Time (s):  0.766	Loss: -0.9909
+Epoch: [11][260/314]	Time (s):  0.801	Loss: -0.4291
+Epoch: [11][270/314]	Time (s):  0.760	Loss: -0.9956
+Epoch: [11][280/314]	Time (s):  0.792	Loss: -0.4997
+Epoch: [11][290/314]	Time (s):  0.847	Loss: -0.9991
+Epoch: [11][300/314]	Time (s):  0.768	Loss: -0.8749
+Epoch: [11][310/314]	Time (s):  0.745	Loss: -0.1307
+Epoch: [12][  0/314]	Time (s):  6.581	Loss: -0.3650
+Epoch: [12][ 10/314]	Time (s):  0.507	Loss: -0.7470
+Epoch: [12][ 20/314]	Time (s):  0.507	Loss: -0.7473
+Epoch: [12][ 30/314]	Time (s):  0.504	Loss: -0.7295
+Epoch: [12][ 40/314]	Time (s):  0.506	Loss: -0.9139
+Epoch: [12][ 50/314]	Time (s):  0.506	Loss: -0.6619
+Epoch: [12][ 60/314]	Time (s):  0.504	Loss: -0.9991
+Epoch: [12][ 70/314]	Time (s):  0.499	Loss: -0.7742
+Epoch: [12][ 80/314]	Time (s):  0.512	Loss: -0.9922
+Epoch: [12][ 90/314]	Time (s):  0.622	Loss: -0.5035
+Epoch: [12][100/314]	Time (s):  1.019	Loss: -0.5052
+Epoch: [12][110/314]	Time (s):  1.336	Loss: -0.5686
+Epoch: [12][120/314]	Time (s):  1.287	Loss: -0.5246
+Epoch: [12][130/314]	Time (s):  1.068	Loss: -0.9952
+Epoch: [12][140/314]	Time (s):  0.927	Loss: -0.9994
+Epoch: [12][150/314]	Time (s):  0.887	Loss: -0.7375
+Epoch: [12][160/314]	Time (s):  0.859	Loss: -0.7473
+Epoch: [12][170/314]	Time (s):  0.793	Loss: -0.6639
+Epoch: [12][180/314]	Time (s):  0.795	Loss: -0.9777
+Epoch: [12][190/314]	Time (s):  0.772	Loss: -0.4976
+Epoch: [12][200/314]	Time (s):  0.884	Loss: -0.5359
+Epoch: [12][210/314]	Time (s):  0.779	Loss: -0.7446
+Epoch: [12][220/314]	Time (s):  0.790	Loss: -0.7481
+Epoch: [12][230/314]	Time (s):  0.805	Loss: -0.9698
+Epoch: [12][240/314]	Time (s):  0.905	Loss: -0.9970
+Epoch: [12][250/314]	Time (s):  0.804	Loss: -0.4900
+Epoch: [12][260/314]	Time (s):  0.955	Loss: -0.7489
+Epoch: [12][270/314]	Time (s):  0.799	Loss: -0.9980
+Epoch: [12][280/314]	Time (s):  0.782	Loss: -0.5327
+Epoch: [12][290/314]	Time (s):  0.860	Loss: -0.3538
+Epoch: [12][300/314]	Time (s):  0.758	Loss: -0.6022
+Epoch: [12][310/314]	Time (s):  0.758	Loss: -0.7461
+Epoch: [13][  0/314]	Time (s):  6.491	Loss: -0.9949
+Epoch: [13][ 10/314]	Time (s):  0.502	Loss: -0.9859
+Epoch: [13][ 20/314]	Time (s):  0.505	Loss: -0.9771
+Epoch: [13][ 30/314]	Time (s):  0.505	Loss: -0.9678
+Epoch: [13][ 40/314]	Time (s):  0.503	Loss: -0.3306
+Epoch: [13][ 50/314]	Time (s):  0.504	Loss: -0.5400
+Epoch: [13][ 60/314]	Time (s):  0.505	Loss: -0.7511
+Epoch: [13][ 70/314]	Time (s):  0.504	Loss: -0.7505
+Epoch: [13][ 80/314]	Time (s):  0.504	Loss: -0.4994
+Epoch: [13][ 90/314]	Time (s):  0.511	Loss: -0.9883
+Epoch: [13][100/314]	Time (s):  0.521	Loss: -0.9899
+Epoch: [13][110/314]	Time (s):  0.663	Loss: -0.9955
+Epoch: [13][120/314]	Time (s):  1.225	Loss: -0.9993
+Epoch: [13][130/314]	Time (s):  2.044	Loss: -0.9977
+Epoch: [13][140/314]	Time (s):  1.134	Loss: -0.9948
+Epoch: [13][150/314]	Time (s):  1.102	Loss: -0.9935
+Epoch: [13][160/314]	Time (s):  0.852	Loss: -0.5099
+Epoch: [13][170/314]	Time (s):  0.796	Loss: -0.7288
+Epoch: [13][180/314]	Time (s):  0.780	Loss: -0.5106
+Epoch: [13][190/314]	Time (s):  0.740	Loss: -0.9670
+Epoch: [13][200/314]	Time (s):  0.729	Loss: -0.9985
+Epoch: [13][210/314]	Time (s):  0.736	Loss: -0.4981
+Epoch: [13][220/314]	Time (s):  0.717	Loss: -0.7493
+Epoch: [13][230/314]	Time (s):  0.727	Loss: -0.2257
+Epoch: [13][240/314]	Time (s):  0.744	Loss: -0.6661
+Epoch: [13][250/314]	Time (s):  0.748	Loss: -0.9974
+Epoch: [13][260/314]	Time (s):  0.746	Loss: -0.7516
+Epoch: [13][270/314]	Time (s):  0.795	Loss: -0.7624
+Epoch: [13][280/314]	Time (s):  0.755	Loss: -0.7723
+Epoch: [13][290/314]	Time (s):  0.758	Loss: -0.7627
+Epoch: [13][300/314]	Time (s):  0.750	Loss: -0.2734
+Epoch: [13][310/314]	Time (s):  0.718	Loss: -0.9991
+Epoch: [14][  0/314]	Time (s):  6.527	Loss: -0.7113
+Epoch: [14][ 10/314]	Time (s):  0.503	Loss: -0.7861
+Epoch: [14][ 20/314]	Time (s):  0.507	Loss: -0.8670
+Epoch: [14][ 30/314]	Time (s):  0.506	Loss: -0.3912
+Epoch: [14][ 40/314]	Time (s):  0.505	Loss: -0.7146
+Epoch: [14][ 50/314]	Time (s):  0.504	Loss: -0.6178
+Epoch: [14][ 60/314]	Time (s):  0.524	Loss: -0.7485
+Epoch: [14][ 70/314]	Time (s):  0.536	Loss: -0.7628
+Epoch: [14][ 80/314]	Time (s):  0.563	Loss: -0.7557
+Epoch: [14][ 90/314]	Time (s):  0.605	Loss: -0.9939
+Epoch: [14][100/314]	Time (s):  0.671	Loss: -0.9994
+Epoch: [14][110/314]	Time (s):  0.730	Loss: -0.5214
+Epoch: [14][120/314]	Time (s):  0.811	Loss: -0.5050
+Epoch: [14][130/314]	Time (s):  0.871	Loss: -0.9981
+Epoch: [14][140/314]	Time (s):  0.894	Loss: -0.9940
+Epoch: [14][150/314]	Time (s):  0.874	Loss: -0.7531
+Epoch: [14][160/314]	Time (s):  0.864	Loss: -0.7514
+Epoch: [14][170/314]	Time (s):  0.897	Loss: -0.9577
+Epoch: [14][180/314]	Time (s):  0.810	Loss: -0.8684
+Epoch: [14][190/314]	Time (s):  0.778	Loss: -0.9808
+Epoch: [14][200/314]	Time (s):  0.792	Loss: -0.2926
+Epoch: [14][210/314]	Time (s):  0.760	Loss: -0.6627
+Epoch: [14][220/314]	Time (s):  0.840	Loss: -0.7257
+Epoch: [14][230/314]	Time (s):  0.754	Loss: -0.7427
+Epoch: [14][240/314]	Time (s):  0.751	Loss: -0.9980
+Epoch: [14][250/314]	Time (s):  0.743	Loss: -0.6400
+Epoch: [14][260/314]	Time (s):  0.750	Loss: -0.7493
+Epoch: [14][270/314]	Time (s):  0.756	Loss: -0.9954
+Epoch: [14][280/314]	Time (s):  0.745	Loss: -0.3652
+Epoch: [14][290/314]	Time (s):  0.749	Loss: -0.9998
+Epoch: [14][300/314]	Time (s):  0.740	Loss: -0.6524
+Epoch: [14][310/314]	Time (s):  0.714	Loss: -0.5936
+Epoch: [15][  0/314]	Time (s):  6.627	Loss: -0.2559
+Epoch: [15][ 10/314]	Time (s):  0.507	Loss: -0.7490
+Epoch: [15][ 20/314]	Time (s):  0.511	Loss: -0.6760
+Epoch: [15][ 30/314]	Time (s):  0.506	Loss: -0.9068
+Epoch: [15][ 40/314]	Time (s):  0.504	Loss: -0.9941
+Epoch: [15][ 50/314]	Time (s):  0.500	Loss: -0.5042
+Epoch: [15][ 60/314]	Time (s):  0.508	Loss: -0.5000
+Epoch: [15][ 70/314]	Time (s):  0.513	Loss: -0.9786
+Epoch: [15][ 80/314]	Time (s):  0.543	Loss: -0.5237
+Epoch: [15][ 90/314]	Time (s):  0.584	Loss: -0.9127
+Epoch: [15][100/314]	Time (s):  0.631	Loss: -0.6330
+Epoch: [15][110/314]	Time (s):  0.709	Loss: -0.9855
+Epoch: [15][120/314]	Time (s):  0.777	Loss: -0.9539
+Epoch: [15][130/314]	Time (s):  0.869	Loss: -0.5080
+Epoch: [15][140/314]	Time (s):  0.901	Loss: -0.5044
+Epoch: [15][150/314]	Time (s):  0.903	Loss: -0.4996
+Epoch: [15][160/314]	Time (s):  0.875	Loss: -0.7494
+Epoch: [15][170/314]	Time (s):  0.853	Loss: -0.6874
+Epoch: [15][180/314]	Time (s):  0.814	Loss: -0.5284
+Epoch: [15][190/314]	Time (s):  0.821	Loss: -0.5012
+Epoch: [15][200/314]	Time (s):  0.773	Loss: -0.7605
+Epoch: [15][210/314]	Time (s):  0.773	Loss: -0.7333
+Epoch: [15][220/314]	Time (s):  0.754	Loss: -0.7519
+Epoch: [15][230/314]	Time (s):  0.777	Loss: -0.2579
+Epoch: [15][240/314]	Time (s):  0.765	Loss: -0.9952
+Epoch: [15][250/314]	Time (s):  0.764	Loss: -0.6467
+Epoch: [15][260/314]	Time (s):  0.765	Loss: -0.7059
+Epoch: [15][270/314]	Time (s):  0.758	Loss: -0.9991
+Epoch: [15][280/314]	Time (s):  0.815	Loss: -0.7470
+Epoch: [15][290/314]	Time (s):  0.769	Loss: -0.5034
+Epoch: [15][300/314]	Time (s):  0.748	Loss: -0.5143
+Epoch: [15][310/314]	Time (s):  0.712	Loss: -0.5374
+Epoch: [16][  0/314]	Time (s):  6.801	Loss: -0.4996
+Epoch: [16][ 10/314]	Time (s):  0.504	Loss: -0.5004
+Epoch: [16][ 20/314]	Time (s):  0.505	Loss: -0.5050
+Epoch: [16][ 30/314]	Time (s):  0.505	Loss: -0.5009
+Epoch: [16][ 40/314]	Time (s):  0.503	Loss: -0.7736
+Epoch: [16][ 50/314]	Time (s):  0.511	Loss: -0.8049
+Epoch: [16][ 60/314]	Time (s):  0.509	Loss: -0.8689
+Epoch: [16][ 70/314]	Time (s):  0.516	Loss: -0.9988
+Epoch: [16][ 80/314]	Time (s):  0.567	Loss: -0.4912
+Epoch: [16][ 90/314]	Time (s):  0.673	Loss: -0.5021
+Epoch: [16][100/314]	Time (s):  0.683	Loss: -0.7565
+Epoch: [16][110/314]	Time (s):  0.749	Loss: -0.3068
+Epoch: [16][120/314]	Time (s):  0.840	Loss: -0.7389
+Epoch: [16][130/314]	Time (s):  0.881	Loss: -0.9971
+Epoch: [16][140/314]	Time (s):  0.904	Loss: -0.8981
+Epoch: [16][150/314]	Time (s):  0.894	Loss: -0.7625
+Epoch: [16][160/314]	Time (s):  0.871	Loss: -0.9984
+Epoch: [16][170/314]	Time (s):  0.839	Loss: -0.9950
+Epoch: [16][180/314]	Time (s):  0.808	Loss: -0.7500
+Epoch: [16][190/314]	Time (s):  0.789	Loss: -0.6056
+Epoch: [16][200/314]	Time (s):  0.775	Loss: -0.8047
+Epoch: [16][210/314]	Time (s):  0.769	Loss: -0.6347
+Epoch: [16][220/314]	Time (s):  0.765	Loss: -0.7491
+Epoch: [16][230/314]	Time (s):  0.776	Loss: -0.8231
+Epoch: [16][240/314]	Time (s):  0.753	Loss: -0.5202
+Epoch: [16][250/314]	Time (s):  0.750	Loss: -0.7142
+Epoch: [16][260/314]	Time (s):  0.761	Loss: -0.6220
+Epoch: [16][270/314]	Time (s):  0.753	Loss: -0.6580
+Epoch: [16][280/314]	Time (s):  0.797	Loss: -0.7488
+Epoch: [16][290/314]	Time (s):  0.757	Loss: -0.9988
+Epoch: [16][300/314]	Time (s):  0.779	Loss: -0.8072
+Epoch: [16][310/314]	Time (s):  0.722	Loss: -0.7499
+Epoch: [17][  0/314]	Time (s):  6.529	Loss: -0.8917
+Epoch: [17][ 10/314]	Time (s):  0.506	Loss: -0.6794
+Epoch: [17][ 20/314]	Time (s):  0.506	Loss: -0.9762
+Epoch: [17][ 30/314]	Time (s):  0.504	Loss: -0.7476
+Epoch: [17][ 40/314]	Time (s):  0.503	Loss: -0.7640
+Epoch: [17][ 50/314]	Time (s):  0.506	Loss: -0.5754
+Epoch: [17][ 60/314]	Time (s):  0.507	Loss: -0.9884
+Epoch: [17][ 70/314]	Time (s):  0.519	Loss: -0.5046
+Epoch: [17][ 80/314]	Time (s):  0.539	Loss: -0.9581
+Epoch: [17][ 90/314]	Time (s):  0.584	Loss: -0.7605
+Epoch: [17][100/314]	Time (s):  0.630	Loss: -0.6256
+Epoch: [17][110/314]	Time (s):  0.740	Loss: -0.4971
+Epoch: [17][120/314]	Time (s):  0.830	Loss: -0.9985
+Epoch: [17][130/314]	Time (s):  0.867	Loss: -0.9993
+Epoch: [17][140/314]	Time (s):  0.896	Loss: -0.4994
+Epoch: [17][150/314]	Time (s):  0.923	Loss: -0.4368
+Epoch: [17][160/314]	Time (s):  1.147	Loss: -0.3225
+Epoch: [17][170/314]	Time (s):  0.909	Loss: -0.7477
+Epoch: [17][180/314]	Time (s):  0.884	Loss: -0.7418
+Epoch: [17][190/314]	Time (s):  0.818	Loss: -0.8476
+Epoch: [17][200/314]	Time (s):  0.787	Loss: -0.9991
+Epoch: [17][210/314]	Time (s):  0.773	Loss: -0.9701
+Epoch: [17][220/314]	Time (s):  0.754	Loss: -0.9960
+Epoch: [17][230/314]	Time (s):  0.802	Loss: -0.7501
+Epoch: [17][240/314]	Time (s):  0.745	Loss: -0.9960
+Epoch: [17][250/314]	Time (s):  0.766	Loss: -0.7632
+Epoch: [17][260/314]	Time (s):  0.772	Loss: -0.4990
+Epoch: [17][270/314]	Time (s):  0.763	Loss: -0.5009
+Epoch: [17][280/314]	Time (s):  0.768	Loss: -0.9963
+Epoch: [17][290/314]	Time (s):  0.767	Loss: -0.7998
+Epoch: [17][300/314]	Time (s):  0.751	Loss: -0.4929
+Epoch: [17][310/314]	Time (s):  0.722	Loss: -0.9993
+Epoch: [18][  0/314]	Time (s):  6.512	Loss: -0.9960
+Epoch: [18][ 10/314]	Time (s):  0.503	Loss: -0.7558
+Epoch: [18][ 20/314]	Time (s):  0.504	Loss: -0.9997
+Epoch: [18][ 30/314]	Time (s):  0.507	Loss: -0.8627
+Epoch: [18][ 40/314]	Time (s):  0.504	Loss: -0.4995
+Epoch: [18][ 50/314]	Time (s):  0.505	Loss: -0.9959
+Epoch: [18][ 60/314]	Time (s):  0.503	Loss: -0.9940
+Epoch: [18][ 70/314]	Time (s):  0.516	Loss: -0.7520
+Epoch: [18][ 80/314]	Time (s):  0.536	Loss: -0.7427
+Epoch: [18][ 90/314]	Time (s):  0.579	Loss: -0.9986
+Epoch: [18][100/314]	Time (s):  0.641	Loss: -0.9995
+Epoch: [18][110/314]	Time (s):  0.731	Loss: -0.9523
+Epoch: [18][120/314]	Time (s):  0.785	Loss: -0.9891
+Epoch: [18][130/314]	Time (s):  0.867	Loss: -0.7516
+Epoch: [18][140/314]	Time (s):  0.941	Loss: -0.9978
+Epoch: [18][150/314]	Time (s):  0.921	Loss: -0.7449
+Epoch: [18][160/314]	Time (s):  0.902	Loss: -0.7526
+Epoch: [18][170/314]	Time (s):  0.855	Loss: -0.7549
+Epoch: [18][180/314]	Time (s):  0.820	Loss: -0.9858
+Epoch: [18][190/314]	Time (s):  0.843	Loss: -0.7419
+Epoch: [18][200/314]	Time (s):  0.800	Loss: -0.9995
+Epoch: [18][210/314]	Time (s):  0.787	Loss: -0.4997
+Epoch: [18][220/314]	Time (s):  0.756	Loss: -0.7641
+Epoch: [18][230/314]	Time (s):  0.767	Loss: -0.9876
+Epoch: [18][240/314]	Time (s):  0.745	Loss: -0.7514
+Epoch: [18][250/314]	Time (s):  0.748	Loss: -0.7697
+Epoch: [18][260/314]	Time (s):  0.752	Loss: -0.8319
+Epoch: [18][270/314]	Time (s):  0.745	Loss: -0.9987
+Epoch: [18][280/314]	Time (s):  0.733	Loss: -0.4779
+Epoch: [18][290/314]	Time (s):  0.733	Loss: -0.9986
+Epoch: [18][300/314]	Time (s):  0.748	Loss: -0.9958
+Epoch: [18][310/314]	Time (s):  0.715	Loss: -0.5032
+Epoch: [19][  0/314]	Time (s):  6.572	Loss: -0.9989
+Epoch: [19][ 10/314]	Time (s):  0.502	Loss: -0.7460
+Epoch: [19][ 20/314]	Time (s):  0.503	Loss: -0.9885
+Epoch: [19][ 30/314]	Time (s):  0.503	Loss: -0.5016
+Epoch: [19][ 40/314]	Time (s):  0.506	Loss: -0.7474
+Epoch: [19][ 50/314]	Time (s):  0.500	Loss: -0.7379
+Epoch: [19][ 60/314]	Time (s):  0.509	Loss: -0.7479
+Epoch: [19][ 70/314]	Time (s):  0.504	Loss: -0.4426
+Epoch: [19][ 80/314]	Time (s):  0.505	Loss: -0.7522
+Epoch: [19][ 90/314]	Time (s):  0.504	Loss: -0.9975
+Epoch: [19][100/314]	Time (s):  0.501	Loss: -0.8929
+Epoch: [19][110/314]	Time (s):  0.520	Loss: -0.9905
+Epoch: [19][120/314]	Time (s):  2.551	Loss: -0.2575
+Epoch: [19][130/314]	Time (s):  3.932	Loss: -0.9991
+Epoch: [19][140/314]	Time (s):  1.210	Loss: -0.9991
+Epoch: [19][150/314]	Time (s):  1.038	Loss: -0.3823
+Epoch: [19][160/314]	Time (s):  0.882	Loss: -0.6052
+Epoch: [19][170/314]	Time (s):  0.831	Loss: -0.9992
+Epoch: [19][180/314]	Time (s):  0.793	Loss: -0.5007
+Epoch: [19][190/314]	Time (s):  0.759	Loss: -0.9986
+Epoch: [19][200/314]	Time (s):  0.782	Loss: -0.3834
+Epoch: [19][210/314]	Time (s):  0.817	Loss: -0.9376
+Epoch: [19][220/314]	Time (s):  1.116	Loss: -0.9985
+Epoch: [19][230/314]	Time (s):  0.801	Loss: -0.7491
+Epoch: [19][240/314]	Time (s):  0.806	Loss: -0.8828
+Epoch: [19][250/314]	Time (s):  0.776	Loss: -0.7423
+Epoch: [19][260/314]	Time (s):  0.785	Loss: -0.7789
+Epoch: [19][270/314]	Time (s):  0.763	Loss: -0.7377
+Epoch: [19][280/314]	Time (s):  0.784	Loss: -0.7852
+Epoch: [19][290/314]	Time (s):  0.782	Loss: -0.5036
+Epoch: [19][300/314]	Time (s):  0.779	Loss: -0.7628
+Epoch: [19][310/314]	Time (s):  0.739	Loss: -0.4923
+Checkpoint 19 saved.
+
+Unsupervised training of SimSiam network complete.
+Total elapsed time: 1.0 hrs, 32 mins and 18 secs.
+
