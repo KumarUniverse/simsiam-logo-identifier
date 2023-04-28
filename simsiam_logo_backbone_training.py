@@ -8,6 +8,8 @@
 # Note: This code is intended to be run on a single CPU, a Nvidia GPU or Apple GPU.
 #######################################################################################
 
+# cmd: python3 simsiam_logo_backbone_training.py ./datasets/Car_Brand_Logos/ -a efficientnet_v2_s >> output-20e-32b-effnetv2.txt
+
 import argparse
 import math
 import os
@@ -132,7 +134,8 @@ def main_worker(args):
         args.arch = checkpoint['arch'] # architecture of the pretrained model (default: 'resnet50')
         # Checkpoints are saved with fix_pred_lr set to True.
         # So when loading checkpoints, fix_pred_lr must be set to True.
-        args.fix_pred_lr = True
+        #args.fix_pred_lr = False
+        args.set_cp_epoch = True
 
     # Initialize SimSiam model and optimizer with the loaded parameters.
     print("=> creating model '{}'".format(args.arch))

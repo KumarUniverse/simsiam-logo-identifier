@@ -1,4 +1,4 @@
-####################################################################################################
+#######################################################################################
 # Final Project
 # Course: CSE 586
 # Authors: Dylan Knowles and Akash Kumar
@@ -6,9 +6,7 @@
 # neural network model to identify car brand logos.
 # Original SimSiam repo: https://github.com/facebookresearch/simsiam
 # Note: This code is intended to be run on a single CPU, a Nvidia GPU or Apple GPU.
-# Car logos dataset: https://www.kaggle.com/datasets/volkandl/car-brand-logos?resource=download
-# FLICKRLOGOS-32 dataset: https://www.uni-augsburg.de/en/fakultaet/fai/informatik/prof/mmc/research/datensatze/flickrlogos/
-####################################################################################################
+#######################################################################################
 
 import argparse
 import math
@@ -47,7 +45,7 @@ parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet50',
                     help='model architecture: ' + ' | '.join(model_names) + ' (default: resnet50)')
 parser.add_argument('-j', '--workers', default=8, type=int, metavar='N',
                     help='number of data loading workers (default: 8)')
-parser.add_argument('--epochs', default=10, type=int, metavar='N',
+parser.add_argument('--epochs', default=20, type=int, metavar='N',
                     help='number of total epochs to run (default: 100)')
 parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
                     help='manual epoch number (useful on restarts)')
@@ -67,7 +65,9 @@ parser.add_argument('--wd', '--weight-decay', default=1e-4, type=float,
 parser.add_argument('-p', '--print-freq', default=10, type=int,
                     metavar='N', help='print frequency (default: 10)')
 parser.add_argument('--resume', default='', type=str, metavar='PATH',
-                    help='path to latest checkpoint (default: None)')
+                    help='path to the checkpoint (default: None)')
+parser.add_argument('--pretrained', default='', type=str, metavar='PATH',
+                    help='path to pretrained checkpoint (default: None)')
 parser.add_argument('--seed', default=None, type=int,
                     help='seed for initializing training (default: None)')
 
@@ -78,6 +78,8 @@ parser.add_argument('--pred-dim', default=512, type=int,
                     help='hidden dimension of the predictor (default: 512)')
 parser.add_argument('--fix-pred-lr', action='store_true',
                     help='fix learning rate for the predictor (True if included; default: False)')
+
+best_acc1 = 0
 
 def main():
     """Program execution starts here."""
@@ -108,6 +110,7 @@ def main():
 
 def main_worker(args):
     """Helper function for the main function."""
+    global best_acc1
     # Set the GPU device to use.
     print('Is CUDA available: ', torch.cuda.is_available())
     print('Is MPS available: ', torch.backends.mps.is_available())
@@ -123,115 +126,137 @@ def main_worker(args):
     print(f"Using {device_str.upper()} device...\n")
 
     # Load the parameters of the pre-trained model in the saved checkpoint.
-    if args.resume:
-        if not os.path.isfile(args.resume): # args.resume is the path to the checkpoint
-            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), args.resume)
-        checkpoint = torch.load(args.resume, map_location=gpu_device)
+    if args.pretrained:
+        print("=> loading pretrained checkpoint...")
+        if not os.path.isfile(args.pretrained): # args.pretrained is the path to the pretrained checkpoint
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), args.pretrained)
+        checkpoint = torch.load(args.pretrained, map_location=gpu_device)
+
+        # rename moco pre-trained keys
+        state_dict = checkpoint['state_dict']
+        # Throw away the predictor and fc parameters of checkpoint.
+        for k in list(state_dict.keys()):
+            # retain only encoder up to before the embedding layer
+            if (k.startswith('module.encoder') and not k.startswith('module.encoder.fc')
+                and not k.startswith('module.encoder.classifier')):
+                # remove prefix
+                state_dict[k[len("module.encoder."):]] = state_dict[k]
+            # delete renamed or unused k
+            del state_dict[k]
+
+        args.start_epoch = 0
         # If resuming from checkpoint, use same architecture as before.
-        args.arch = checkpoint['arch'] # architecture of the pretrained model (default: 'resnet50')
+        args.arch = checkpoint['arch'] # 'resnet50' # architecture of the pretrained model (default: 'resnet50')
         # Checkpoints are saved with fix_pred_lr set to True.
         # So when loading checkpoints, fix_pred_lr must be set to True.
         args.fix_pred_lr = True
 
     # Initialize SimSiam model and optimizer with the loaded parameters.
     print("=> creating model '{}'".format(args.arch))
-    model = simsiam.builder.SimSiam(
-            models.__dict__[args.arch],
-            args.dim, args.pred_dim)
-    model = torch.nn.DataParallel(model) # Implement data parallelism at the module level.
-    model.to(gpu_device) # Convert model format to make it suitable for current GPU device.
-    #print(model) # print model for debugging
+    # model = simsiam.builder.SimSiam(
+    #         models.__dict__[args.arch],
+    #         args.dim, args.pred_dim)
 
-    if args.fix_pred_lr:
-        optim_params = [{'params': model.module.encoder.parameters(), 'fix_lr': False},
-                        {'params': model.module.predictor.parameters(), 'fix_lr': True}]
+
+    model = models.__dict__[args.arch]()
+
+    model.to(gpu_device) # Convert model format to make it suitable for current GPU device.
+
+    # freeze all layers but the last fc
+    if args.arch == 'efficientnet_v2_s':
+        for name, param in model.named_parameters():
+            #print(name)
+            if name not in ['classifier.1.weight','classifier.1.bias']:
+                param.requires_grad = False
     else:
-        optim_params = model.parameters()
+        for name, param in model.named_parameters():
+            if name not in ['fc.weight', 'fc.bias']:
+                param.requires_grad = False
+    # print(model) # prints default resnet50 architecture with 1000 output features in final fc layer.
+
+    # init the fc layer
+    if args.arch == 'efficientnet_v2_s':
+        model.classifier.out_features = 8 # number of car logo classes.
+        model.classifier[1].weight.data.normal_(mean=0.0, std=0.01)
+        model.classifier[1].bias.data.zero_()
+    else:
+        model.fc.out_features = 8 # number of car logo classes.
+        model.fc.weight.data.normal_(mean=0.0, std=0.01)
+        model.fc.bias.data.zero_()
+
+    init_lr =  args.lr * 2 # args.lr * 512 / 256 # original batch size was 512
 
     # define loss function (criterion) and optimizer
     if torch.cuda.is_available():
-        criterion = nn.CosineSimilarity(dim=1).to(gpu_device) # use if using single Nvidia GPU
+        criterion = nn.CrossEntropyLoss().to(gpu_device) # use if using single Nvidia GPU
         cudnn.benchmark = True
     else:
-        criterion = nn.CosineSimilarity(dim=1).to(gpu_device)
+        criterion = nn.CrossEntropyLoss().to(gpu_device)
+
+
+     # optimize only the linear classifier
+    parameters = list(filter(lambda p: p.requires_grad, model.parameters()))
+    assert len(parameters) == 2
 
     #init_lr = lr * batch_size / 256 # infer learning rate before changing batch size
-    init_lr =  args.lr * 2 # args.lr * 512 / 256 # original batch size was 512
-    optimizer = torch.optim.SGD(optim_params, init_lr,
+
+    optimizer = torch.optim.SGD(parameters, init_lr,
                                 momentum=args.momentum,
                                 weight_decay=args.weight_decay)
-    if args.resume:
-        model.load_state_dict(checkpoint['state_dict'])
-        optimizer.load_state_dict(checkpoint['optimizer'])
+    if args.pretrained:
+        msg = model.load_state_dict(state_dict, strict=False)
+        if args.arch == 'efficientnet_v2_s':
+            assert set(msg.missing_keys) == {'classifier.1.weight','classifier.1.bias'}
+        else:
+            assert set(msg.missing_keys) == {"fc.weight", "fc.bias"}
         if args.set_cp_epoch: # to resume training from the last saved epoch.
             args.start_epoch = checkpoint['epoch']
 
-    # There are 2 main network sections: the encoder and the predictor.
-    # By default, all the layers require gradients (requires_grad_=True).
-    model_layers = model.module.children()
+    # optionally resume from a lincls checkpoint
+    if args.resume:
+        if os.path.isfile(args.resume):
+            print("=> loading checkpoint '{}'".format(args.resume))
+            checkpoint = torch.load(args.resume, map_location=gpu_device)
+            args.start_epoch = checkpoint['epoch']
+            best_acc1 = checkpoint['best_acc1']
+            best_acc1 = best_acc1.to(gpu_device)
+            model.load_state_dict(checkpoint['state_dict'])
+            optimizer.load_state_dict(checkpoint['optimizer'])
+            print("=> loaded checkpoint '{}' (epoch {})"
+                  .format(args.resume, checkpoint['epoch']))
+        else:
+            print("=> no checkpoint found at '{}'".format(args.resume))
 
-    # Freeze all the layers of the encoder except the first 2 layers.
-    model_layers_list = list(model_layers)
-    # print(f"Model_layers_list len: {len(model_layers_list)}")  # 2
-    encoder = model_layers_list[0]
-    encoder_layers = encoder.children()
-    num_encoder_layers = 0  # 10
-    num_unfreeze_layers = 2
-    for layer in encoder_layers:
-        # For debugging.
-        # print(f"LAYER: {num_encoder_layers}")
-        # print(layer)
-        # if layer.requires_grad_:
-        #     print(f'This layer requires gradients')
-        if num_encoder_layers >= num_unfreeze_layers:
-            layer.requires_grad_ = False
-        num_encoder_layers += 1
-    # print(f"Number of layers in encoder: {num_encoder_layers}\n") # 10 layers
-
-    # Freeze all the layers of the predictor except the last layer.
-    predictor = model_layers_list[1]
-    predictor_layers = predictor.children()
-    num_predictor_layers = 0  # 4
-    for layer in predictor_layers:
-        # For debugging.
-        # print(f"LAYER: {num_predictor_layers}")
-        # print(layer)
-        # if layer.requires_grad_:
-        #     print(f'This layer requires gradients')
-        if num_predictor_layers <= 3:
-            layer.requires_grad_ = False
-        num_predictor_layers += 1
-    # print(f"Number of layers in predictor: {num_predictor_layers}") # 4 layers
-
-    #num_layers = num_encoder_layers + num_predictor_layers  # 14 (NOTE)
 
     # Data loading code
-    traindir = os.path.join(args.data, 'Train')  # args.data = ./datasets/Car_Brand_Logos/
+    traindir = os.path.join(args.data, 'Train')  # args.data = ./datasets/Car_Brand_Logos/Train
+    valdir = os.path.join(args.data, 'Test') # args.data = ./datasets/Car_Brand_Logos/Test
     normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                      std=[0.229, 0.224, 0.225])
 
-    # MoCo v2's aug: similar to SimCLR https://arxiv.org/abs/2002.05709
-    augmentation = [
-        transforms.RandomResizedCrop(224, scale=(0.2, 1.)),
-        transforms.RandomApply([
-            transforms.ColorJitter(0.4, 0.4, 0.4, 0.1)  # not strengthened
-        ], p=0.8),
-        transforms.RandomGrayscale(p=0.2),
-        transforms.RandomApply([simsiam.loader.GaussianBlur([.1, 2.])], p=0.5),
-        transforms.RandomHorizontalFlip(),
-        transforms.ToTensor(),
-        normalize
-    ]
-
     train_dataset = datasets.ImageFolder(
         traindir,
-        simsiam.loader.TwoCropsTransform(transforms.Compose(augmentation)))
+        transforms.Compose([
+            transforms.RandomResizedCrop(224),
+            transforms.RandomHorizontalFlip(),
+            transforms.ToTensor(),
+            normalize,
+        ]))
 
-    shuffle_samples = True
-
+    train_sampler = None
     train_loader = torch.utils.data.DataLoader(
-        train_dataset, batch_size=args.batch_size, shuffle=shuffle_samples,
-        num_workers=args.workers, pin_memory=True, drop_last=True)
+        train_dataset, batch_size=args.batch_size, shuffle=(train_sampler is None),
+        num_workers=args.workers, pin_memory=True, sampler=train_sampler)
+
+    val_loader = torch.utils.data.DataLoader(
+            datasets.ImageFolder(valdir, transforms.Compose([
+                transforms.Resize(256),
+                transforms.CenterCrop(224),
+                transforms.ToTensor(),
+                normalize,
+            ])),
+            batch_size=args.batch_size, shuffle=False,
+            num_workers=args.workers, pin_memory=True, drop_last=True)
 
     is_checkpoint_saved = True  # to control whether checkpoints are saved or not
     for epoch in range(args.start_epoch, args.epochs):
@@ -240,45 +265,51 @@ def main_worker(args):
         # train for one epoch
         train(train_loader, model, criterion, optimizer, epoch, args, device_str)
 
-        # Save a checkpoint every 5 epochs.
+        acc1 = validate(val_loader, model, criterion, device_str, args)
+
+        is_best = acc1 > best_acc1
+        best_acc1 = max(acc1, best_acc1)
+
         if is_checkpoint_saved and ((epoch+1) % 5 == 0):
             save_checkpoint({
                 'epoch': epoch + 1,
                 'arch': args.arch,
                 'state_dict': model.state_dict(),
+                'best_acc1': best_acc1,
                 'optimizer' : optimizer.state_dict(),
-            }, is_best=False, filename='checkpoint_{:04d}.pth.tar'.format(epoch))
+            }, is_best=is_best, filename='checkpoint_lincls_{}_{:04d}.pth.tar'.format(args.arch, epoch))
             print(f"Checkpoint {epoch} saved.")  # for debugging
-
 
 def train(train_loader, model, criterion, optimizer, epoch, args, device_str):
     """Train the SimSiam model."""
     batch_time = AverageMeter('Time (s):', ':6.3f')
     losses = AverageMeter('Loss:', ':.4f')
-    progress = ProgressMeter(len(train_loader),
-                                [batch_time, losses], prefix="Epoch: [{}]".format(epoch))
+    top1 = AverageMeter('Acc@1:', ':6.2f')
+    top5 = AverageMeter('Acc@5:', ':6.2f')
+    progress = ProgressMeter(len(train_loader), [batch_time, losses], prefix="Epoch: [{}]".format(epoch))
 
-    # switch to train mode
-    model.train()
+    # switch to eval mode
+    model.eval()
 
     end = time.time()
-    for i, (images, _) in enumerate(train_loader):
+    for i, (images, target) in enumerate(train_loader):
         # This should work for a single Nvidia or Apple GPU.
-        # print("Converting training images to the correct GPU format.") # for debugging
         if device_str == "cuda":
-            # need non-blocking if using pin memory for CUDA
-            images[0] = images[0].cuda(non_blocking=True)
-            images[1] = images[1].cuda(non_blocking=True)
+            images = images.cuda(non_blocking=True) # need non-blocking if using pin memory for CUDA
+            target = target.cuda(non_blocking=True)
         elif device_str == "mps" or device_str == "cpu":
-            images[0] = images[0].to(device_str)
-            images[1] = images[1].to(device_str)
-
+            images= images.to(device_str)
+            target = target.to(device_str)
 
         # compute output and loss
-        p1, p2, z1, z2 = model(x1=images[0], x2=images[1])
-        loss = -(criterion(p1, z2).mean() + criterion(p2, z1).mean()) * 0.5 # apply stop gradient
+        output = model(images)
+        loss = criterion(output, target)# apply stop gradient
 
-        losses.update(loss.item(), images[0].size(0))
+        # measure accuracy and record loss
+        acc1, acc5 = accuracy(output, target, topk=(1, 5))
+        losses.update(loss.item(), images.size(0))
+        top1.update(acc1[0], images.size(0))
+        top5.update(acc5[0], images.size(0))
 
         # compute gradient and do SGD step
         optimizer.zero_grad()
@@ -292,13 +323,81 @@ def train(train_loader, model, criterion, optimizer, epoch, args, device_str):
         if i % args.print_freq == 0:
             progress.display(i)
 
+def validate(val_loader, model, criterion, device_str, args):
+    # model = simsiam.builder.SimSiam()
+    # model.load_state_dict(torch.load("./checkpoints/checkpoint_0009.pth.tar"))
+    # model = torch.nn.DataParallel(model) # Implement data parallelism at the module level.
+    # model.to(gpu_device) # Convert model format to make it suitable for current GPU device.
+    batch_time = AverageMeter('Time (s):', ':6.3f')
+    losses = AverageMeter('Loss:', ':.4e')
+    top1 = AverageMeter('Acc@1:', ':6.2f')
+    top5 = AverageMeter('Acc@5:', ':6.2f')
+    progress = ProgressMeter(len(val_loader), [batch_time, losses, top1, top5], prefix='Test: ')
+
+    model.eval()
+
+    with torch.no_grad():
+        end = time.time()
+        for i, (images, target) in enumerate(val_loader):
+
+            # This should work for a single Nvidia or Apple GPU.
+            if device_str == "cuda":
+                images = images.cuda(non_blocking=True) # need non-blocking if using pin memory for CUDA
+                target = target.cuda(non_blocking=True)
+            elif device_str == "mps" or device_str == "cpu":
+                images= images.to(device_str)
+                target = target.to(device_str)
+
+            # compute output
+            output = model(images)
+            loss = criterion(output, target)
+
+            # measure accuracy and record loss
+            acc1, acc5 = accuracy(output, target, topk=(1, 5))
+            losses.update(loss.item(), images.size(0))
+            top1.update(acc1[0], images.size(0))
+            top5.update(acc5[0], images.size(0))
+            # _,predicted = torch.max(output,1)
+            # nCorrect += (predicted == target).sum().item()
+
+            # measure elapsed time
+            batch_time.update(time.time() - end)
+            end = time.time()
+
+        # acc = 100 * nCorrect / nSamples
+        # print(f'Accuracy of the model: {acc:.3f} %')
+
+            if i % args.print_freq == 0:
+                progress.display(i)
+
+        # TODO: this should also be done with the ProgressMeter
+        print(' * Acc@1 {top1.avg:.3f} Acc@5 {top5.avg:.3f}'
+              .format(top1=top1, top5=top5))
+
+    return top1.avg
+
+def accuracy(output, target, topk=(1,)):
+    """Computes the accuracy over the k top predictions for the specified values of k"""
+    with torch.no_grad():
+        maxk = max(topk)
+        batch_size = target.size(0)
+
+        _, pred = output.topk(maxk, 1, True, True)
+        pred = pred.t()
+        correct = pred.eq(target.view(1, -1).expand_as(pred))
+
+        res = []
+        for k in topk:
+            correct_k = correct[:k].reshape(-1).float().sum(0, keepdim=True)
+            res.append(correct_k.mul_(100.0 / batch_size))
+        return res
 
 def save_checkpoint(state, is_best, filename='checkpoint.pth.tar'):
     """
     Save the neural network model's parameters to a .tar checkpoint file.
     All checkpoints are stored in the checkpoints/ folder of the current directory.
     """
-    filename = os.path.join("./checkpoints/", filename)
+    filename = os.path.join("./cls_checkpoints/", filename)
     torch.save(state, filename)
     if is_best:
         shutil.copyfile(filename, 'model_best.pth.tar')
@@ -315,7 +414,7 @@ def adjust_learning_rate(optimizer, init_lr, epoch, args):
 
 
 class AverageMeter(object):
-    """Computes and stores the average and current value."""
+    """Computes and stores the average and current value"""
     def __init__(self, name, fmt=':f'):
         self.name = name
         self.fmt = fmt
@@ -323,12 +422,18 @@ class AverageMeter(object):
 
     def reset(self):
         self.val = 0
+        self.avg = 0
+        self.sum = 0
+        self.count = 0
 
     def update(self, val, n=1):
         self.val = val
+        self.sum += val * n
+        self.count += n
+        self.avg = self.sum / self.count
 
     def __str__(self):
-        fmtstr = '{name} {val' + self.fmt + '}'
+        fmtstr = '{name} {val' + self.fmt + '} ({avg' + self.fmt + '})'
         return fmtstr.format(**self.__dict__)
 
 

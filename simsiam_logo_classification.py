@@ -134,6 +134,7 @@ def main_worker(args):
 
         # rename moco pre-trained keys
         state_dict = checkpoint['state_dict']
+        # Throw away the predictor and fc parameters of checkpoint.
         for k in list(state_dict.keys()):
             # retain only encoder up to before the embedding layer
             if k.startswith('module.encoder') and not k.startswith('module.encoder.fc'):
