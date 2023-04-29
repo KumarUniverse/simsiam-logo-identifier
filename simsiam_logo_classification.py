@@ -45,7 +45,7 @@ parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet50',
                     help='model architecture: ' + ' | '.join(model_names) + ' (default: resnet50)')
 parser.add_argument('-j', '--workers', default=8, type=int, metavar='N',
                     help='number of data loading workers (default: 8)')
-parser.add_argument('--epochs', default=10, type=int, metavar='N',
+parser.add_argument('--epochs', default=20, type=int, metavar='N',
                     help='number of total epochs to run (default: 100)')
 parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
                     help='manual epoch number (useful on restarts)')
@@ -244,7 +244,7 @@ def main_worker(args):
             batch_size=args.batch_size, shuffle=False,
             num_workers=args.workers, pin_memory=True, drop_last=True)
 
-    is_checkpoint_saved = True  # to control whether checkpoints are saved or not
+    is_checkpoint_saved = False  # to control whether checkpoints are saved or not
     for epoch in range(args.start_epoch, args.epochs):
         adjust_learning_rate(optimizer, init_lr, epoch, args)
 

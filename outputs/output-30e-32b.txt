@@ -1,0 +1,91 @@
+Is CUDA available:  False
+Is MPS available:  True
+Using MPS device...
+
+=> creating model 'resnet50'
+Epoch: [20][ 0/78]	Time (s):  8.557	Loss: -0.9165
+Epoch: [20][10/78]	Time (s):  1.722	Loss: -0.8426
+Epoch: [20][20/78]	Time (s):  1.767	Loss: -0.8075
+Epoch: [20][30/78]	Time (s):  1.757	Loss: -0.8921
+Epoch: [20][40/78]	Time (s):  1.780	Loss: -0.8616
+Epoch: [20][50/78]	Time (s):  1.758	Loss: -0.8733
+Epoch: [20][60/78]	Time (s):  1.772	Loss: -0.7978
+Epoch: [20][70/78]	Time (s):  1.773	Loss: -0.8716
+Epoch: [21][ 0/78]	Time (s): 10.483	Loss: -0.8684
+Epoch: [21][10/78]	Time (s):  1.767	Loss: -0.9151
+Epoch: [21][20/78]	Time (s):  1.780	Loss: -0.8886
+Epoch: [21][30/78]	Time (s):  1.771	Loss: -0.7990
+Epoch: [21][40/78]	Time (s):  1.832	Loss: -0.6649
+Epoch: [21][50/78]	Time (s):  2.233	Loss: -0.9051
+Epoch: [21][60/78]	Time (s):  2.646	Loss: -0.7710
+Epoch: [21][70/78]	Time (s):  2.453	Loss: -0.9082
+Epoch: [22][ 0/78]	Time (s): 10.287	Loss: -0.8621
+Epoch: [22][10/78]	Time (s):  1.730	Loss: -0.9183
+Epoch: [22][20/78]	Time (s):  1.796	Loss: -0.9228
+Epoch: [22][30/78]	Time (s):  3.173	Loss: -0.8778
+Epoch: [22][40/78]	Time (s):  3.147	Loss: -0.8018
+Epoch: [22][50/78]	Time (s):  2.463	Loss: -0.8941
+Epoch: [22][60/78]	Time (s):  2.479	Loss: -0.8095
+Epoch: [22][70/78]	Time (s):  2.273	Loss: -0.8574
+Epoch: [23][ 0/78]	Time (s): 10.009	Loss: -0.8753
+Epoch: [23][10/78]	Time (s):  1.741	Loss: -0.7902
+Epoch: [23][20/78]	Time (s):  1.725	Loss: -0.7675
+Epoch: [23][30/78]	Time (s):  2.068	Loss: -0.7572
+Epoch: [23][40/78]	Time (s):  3.437	Loss: -0.9094
+Epoch: [23][50/78]	Time (s):  3.159	Loss: -0.8965
+Epoch: [23][60/78]	Time (s):  2.711	Loss: -0.8268
+Epoch: [23][70/78]	Time (s):  2.553	Loss: -0.8879
+Epoch: [24][ 0/78]	Time (s): 10.169	Loss: -0.8264
+Epoch: [24][10/78]	Time (s):  1.763	Loss: -0.9001
+Epoch: [24][20/78]	Time (s):  1.766	Loss: -0.8583
+Epoch: [24][30/78]	Time (s):  3.371	Loss: -0.9212
+Epoch: [24][40/78]	Time (s):  3.003	Loss: -0.8466
+Epoch: [24][50/78]	Time (s):  2.523	Loss: -0.8710
+Epoch: [24][60/78]	Time (s):  2.533	Loss: -0.9008
+Epoch: [24][70/78]	Time (s):  2.577	Loss: -0.8455
+Checkpoint 24 saved.
+Epoch: [25][ 0/78]	Time (s): 10.323	Loss: -0.7444
+Epoch: [25][10/78]	Time (s):  1.731	Loss: -0.8890
+Epoch: [25][20/78]	Time (s):  1.732	Loss: -0.9316
+Epoch: [25][30/78]	Time (s):  3.269	Loss: -0.8445
+Epoch: [25][40/78]	Time (s):  3.423	Loss: -0.8648
+Epoch: [25][50/78]	Time (s):  2.816	Loss: -0.8915
+Epoch: [25][60/78]	Time (s):  2.558	Loss: -0.8806
+Epoch: [25][70/78]	Time (s):  2.420	Loss: -0.9343
+Epoch: [26][ 0/78]	Time (s): 10.323	Loss: -0.9259
+Epoch: [26][10/78]	Time (s):  1.777	Loss: -0.8246
+Epoch: [26][20/78]	Time (s):  1.873	Loss: -0.9346
+Epoch: [26][30/78]	Time (s):  3.688	Loss: -0.7548
+Epoch: [26][40/78]	Time (s):  2.909	Loss: -0.9475
+Epoch: [26][50/78]	Time (s):  3.291	Loss: -0.9090
+Epoch: [26][60/78]	Time (s):  2.698	Loss: -0.9582
+Epoch: [26][70/78]	Time (s):  3.337	Loss: -0.8884
+Epoch: [27][ 0/78]	Time (s):  9.955	Loss: -0.8880
+Epoch: [27][10/78]	Time (s):  1.745	Loss: -0.8689
+Epoch: [27][20/78]	Time (s):  1.715	Loss: -0.8942
+Epoch: [27][30/78]	Time (s):  3.967	Loss: -0.9261
+Epoch: [27][40/78]	Time (s):  3.135	Loss: -0.8811
+Epoch: [27][50/78]	Time (s):  3.119	Loss: -0.9254
+Epoch: [27][60/78]	Time (s):  3.537	Loss: -0.9675
+Epoch: [27][70/78]	Time (s):  2.562	Loss: -0.8560
+Epoch: [28][ 0/78]	Time (s): 10.042	Loss: -0.8991
+Epoch: [28][10/78]	Time (s):  1.729	Loss: -0.8423
+Epoch: [28][20/78]	Time (s):  1.775	Loss: -0.8925
+Epoch: [28][30/78]	Time (s):  3.896	Loss: -0.7941
+Epoch: [28][40/78]	Time (s):  3.178	Loss: -0.9338
+Epoch: [28][50/78]	Time (s):  2.812	Loss: -0.9324
+Epoch: [28][60/78]	Time (s):  2.797	Loss: -0.8844
+Epoch: [28][70/78]	Time (s):  2.581	Loss: -0.8650
+Epoch: [29][ 0/78]	Time (s):  9.923	Loss: -0.8204
+Epoch: [29][10/78]	Time (s):  1.804	Loss: -0.9236
+Epoch: [29][20/78]	Time (s):  1.968	Loss: -0.9346
+Epoch: [29][30/78]	Time (s):  3.884	Loss: -0.8424
+Epoch: [29][40/78]	Time (s):  3.707	Loss: -0.9308
+Epoch: [29][50/78]	Time (s):  3.392	Loss: -0.9096
+Epoch: [29][60/78]	Time (s):  3.437	Loss: -0.9156
+Epoch: [29][70/78]	Time (s):  2.649	Loss: -0.8428
+Checkpoint 29 saved.
+
+Unsupervised training of SimSiam network complete.
+Total elapsed time: 0.0 hrs, 40 mins and 10 secs.
+
