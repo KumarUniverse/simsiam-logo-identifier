@@ -30,8 +30,6 @@ import torchvision.models as models
 import simsiam.loader
 import simsiam.builder
 
-
-
 model_names = sorted(name for name in models.__dict__
     if name.islower() and not name.startswith("__")
     and callable(models.__dict__[name]))
@@ -152,10 +150,6 @@ def main_worker(args):
 
     # Initialize SimSiam model and optimizer with the loaded parameters.
     print("=> creating model '{}'".format(args.arch))
-    # model = simsiam.builder.SimSiam(
-    #         models.__dict__[args.arch],
-    #         args.dim, args.pred_dim)
-
 
     model = models.__dict__[args.arch]()
 
@@ -165,7 +159,6 @@ def main_worker(args):
     for name, param in model.named_parameters():
         if name not in ['fc.weight', 'fc.bias']:
             param.requires_grad = False
-    # print(model) # prints default resnet50 architecture with 1000 output features in final fc layer.
 
     # init the fc layer
     model.fc.out_features = 8 # number of car logo classes.
@@ -185,9 +178,6 @@ def main_worker(args):
      # optimize only the linear classifier
     parameters = list(filter(lambda p: p.requires_grad, model.parameters()))
     assert len(parameters) == 2  # fc.weight, fc.bias
-
-
-    #init_lr = lr * batch_size / 256 # infer learning rate before changing batch size
 
     optimizer = torch.optim.SGD(parameters, init_lr,
                                 momentum=args.momentum,
@@ -310,10 +300,6 @@ def train(train_loader, model, criterion, optimizer, epoch, args, device_str):
             progress.display(i)
 
 def validate(val_loader, model, criterion, device_str, args):
-    # model = simsiam.builder.SimSiam()
-    # model.load_state_dict(torch.load("./checkpoints/checkpoint_0009.pth.tar"))
-    # model = torch.nn.DataParallel(model) # Implement data parallelism at the module level.
-    # model.to(gpu_device) # Convert model format to make it suitable for current GPU device.
     batch_time = AverageMeter('Time (s):', ':6.3f')
     losses = AverageMeter('Loss:', ':.4e')
     top1 = AverageMeter('Acc@1:', ':6.2f')
@@ -343,15 +329,11 @@ def validate(val_loader, model, criterion, device_str, args):
             losses.update(loss.item(), images.size(0))
             top1.update(acc1[0], images.size(0))
             top5.update(acc5[0], images.size(0))
-            # _,predicted = torch.max(output,1)
-            # nCorrect += (predicted == target).sum().item()
+
 
             # measure elapsed time
             batch_time.update(time.time() - end)
             end = time.time()
-
-        # acc = 100 * nCorrect / nSamples
-        # print(f'Accuracy of the model: {acc:.3f} %')
 
             if i % args.print_freq == 0:
                 progress.display(i)

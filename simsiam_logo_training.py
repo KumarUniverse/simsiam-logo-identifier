@@ -1,4 +1,4 @@
-####################################################################################################
+#######################################################################################
 # Final Project
 # Course: CSE 586
 # Authors: Dylan Knowles and Akash Kumar
@@ -6,9 +6,7 @@
 # neural network model to identify car brand logos.
 # Original SimSiam repo: https://github.com/facebookresearch/simsiam
 # Note: This code is intended to be run on a single CPU, a Nvidia GPU or Apple GPU.
-# Car logos dataset: https://www.kaggle.com/datasets/volkandl/car-brand-logos?resource=download
-# FLICKRLOGOS-32 dataset: https://www.uni-augsburg.de/en/fakultaet/fai/informatik/prof/mmc/research/datensatze/flickrlogos/
-####################################################################################################
+#######################################################################################
 
 import argparse
 import math
@@ -28,11 +26,11 @@ import torch.utils.data
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 import torchvision.models as models
+from torchvision.datasets import ImageFolder
+from torchvision.transforms import Compose, ToTensor, Resize
 
 import simsiam.loader
 import simsiam.builder
-
-
 
 model_names = sorted(name for name in models.__dict__
     if name.islower() and not name.startswith("__")
@@ -47,7 +45,7 @@ parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet50',
                     help='model architecture: ' + ' | '.join(model_names) + ' (default: resnet50)')
 parser.add_argument('-j', '--workers', default=8, type=int, metavar='N',
                     help='number of data loading workers (default: 8)')
-parser.add_argument('--epochs', default=20, type=int, metavar='N',
+parser.add_argument('--epochs', default=10, type=int, metavar='N',
                     help='number of total epochs to run (default: 100)')
 parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
                     help='manual epoch number (useful on restarts)')
@@ -57,7 +55,7 @@ parser.add_argument('--set-cp-epoch', action='store_true',
 parser.add_argument('-b', '--batch-size', default=32, type=int,
                     metavar='N',
                     help='mini-batch size (default: 64)')
-parser.add_argument('--lr', '--learning-rate', default=0.05, type=float,
+parser.add_argument('--lr', '--learning-rate', default=0.1, type=float,
                     metavar='LR', help='initial (base) learning rate (default: 0.05)', dest='lr')
 parser.add_argument('--momentum', default=0.9, type=float, metavar='M',
                     help='momentum of SGD solver (default: 0.9)')
@@ -156,7 +154,7 @@ def main_worker(args):
         criterion = nn.CosineSimilarity(dim=1).to(gpu_device)
 
     #init_lr = lr * batch_size / 256 # infer learning rate before changing batch size
-    init_lr =  args.lr * 2 # args.lr * 512 / 256 # original batch size was 512
+    init_lr =  args.lr # args.lr * 512 / 256 # original batch size was 512
     optimizer = torch.optim.SGD(optim_params, init_lr,
                                 momentum=args.momentum,
                                 weight_decay=args.weight_decay)
@@ -178,32 +176,19 @@ def main_worker(args):
     num_encoder_layers = 0  # 10
     num_unfreeze_layers = 2
     for layer in encoder_layers:
-        # For debugging.
-        # print(f"LAYER: {num_encoder_layers}")
-        # print(layer)
-        # if layer.requires_grad_:
-        #     print(f'This layer requires gradients')
+      
         if num_encoder_layers >= num_unfreeze_layers:
             layer.requires_grad_ = False
         num_encoder_layers += 1
-    # print(f"Number of layers in encoder: {num_encoder_layers}\n") # 10 layers
 
     # Freeze all the layers of the predictor except the last layer.
     predictor = model_layers_list[1]
     predictor_layers = predictor.children()
     num_predictor_layers = 0  # 4
     for layer in predictor_layers:
-        # For debugging.
-        # print(f"LAYER: {num_predictor_layers}")
-        # print(layer)
-        # if layer.requires_grad_:
-        #     print(f'This layer requires gradients')
         if num_predictor_layers <= 3:
             layer.requires_grad_ = False
         num_predictor_layers += 1
-    # print(f"Number of layers in predictor: {num_predictor_layers}") # 4 layers
-
-    #num_layers = num_encoder_layers + num_predictor_layers  # 14 (NOTE)
 
     # Data loading code
     traindir = os.path.join(args.data, 'Train')  # args.data = ./datasets/Car_Brand_Logos/
@@ -240,7 +225,6 @@ def main_worker(args):
         # train for one epoch
         train(train_loader, model, criterion, optimizer, epoch, args, device_str)
 
-        # Save a checkpoint every 5 epochs.
         if is_checkpoint_saved and ((epoch+1) % 5 == 0):
             save_checkpoint({
                 'epoch': epoch + 1,
@@ -255,8 +239,7 @@ def train(train_loader, model, criterion, optimizer, epoch, args, device_str):
     """Train the SimSiam model."""
     batch_time = AverageMeter('Time (s):', ':6.3f')
     losses = AverageMeter('Loss:', ':.4f')
-    progress = ProgressMeter(len(train_loader),
-                                [batch_time, losses], prefix="Epoch: [{}]".format(epoch))
+    progress = ProgressMeter(len(train_loader), [batch_time, losses], prefix="Epoch: [{}]".format(epoch))
 
     # switch to train mode
     model.train()
@@ -266,8 +249,7 @@ def train(train_loader, model, criterion, optimizer, epoch, args, device_str):
         # This should work for a single Nvidia or Apple GPU.
         # print("Converting training images to the correct GPU format.") # for debugging
         if device_str == "cuda":
-            # need non-blocking if using pin memory for CUDA
-            images[0] = images[0].cuda(non_blocking=True)
+            images[0] = images[0].cuda(non_blocking=True) # need non-blocking if using pin memory for CUDA
             images[1] = images[1].cuda(non_blocking=True)
         elif device_str == "mps" or device_str == "cpu":
             images[0] = images[0].to(device_str)
