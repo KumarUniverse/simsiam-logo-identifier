@@ -26,9 +26,9 @@ This PyTorch implementation is based on the [SimSiam paper](https://arxiv.org/ab
 <img src="https://assets.uni-augsburg.de/media/filer_public/75/74/75741202-144e-438e-a780-536d64b3e37a/2769032620.jpg" alt="DHL logo" style="width: 500px; height: auto; margin-left: 100px;">
 
 ## How to use
-`Python simsiam_logo_training.py location-of-new-dataset --resume location-of-pretrained-network-checkpoint`
-`Python simsiam_flickr_training.py --resume location-of-pretrained-network-checkpoint`
-`Python simsiam_logo_classification.py location-of-new-dataset --pretrained location-of-pretrained-network-checkpoint`
+`Python simsiam_logo_training.py location-of-new-dataset --resume location-of-pretrained-network-checkpoint`  
+`Python simsiam_flickr_training.py --resume location-of-pretrained-network-checkpoint`  
+`Python simsiam_logo_classification.py location-of-new-dataset --pretrained location-of-pretrained-network-checkpoint`  
 `Python simsiam_flickr_classification.py --pretrained location-of-pretrained-network-checkpoint`
 
 ## License
